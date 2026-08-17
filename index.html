@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 能力地图 — 产品经理的 AI 成长指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-light: #818cf8;
+  --accent: #06b6d4;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Inter", "Noto Sans SC", -apple-system, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Nav ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+nav .inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 60px;
+}
+nav .logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 1.1rem;
+  color: var(--text); text-decoration: none;
+}
+nav .logo .mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.85rem; font-weight: 800;
+}
+nav .links { display: flex; gap: 8px; }
+nav .links a {
+  padding: 6px 14px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; transition: all 0.2s;
+}
+nav .links a:hover { background: var(--bg-alt); color: var(--primary); }
+nav .cta-btn {
+  padding: 8px 20px; border-radius: 8px;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+}
+nav .cta-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ===== Hero ===== */
+.hero {
+  padding: 140px 24px 80px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(79,70,229,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(6,182,212,0.1) 0%, transparent 60%);
+}
+.hero .inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+.hero .badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px; border-radius: 20px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  color: var(--primary-light); font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 1px; margin-bottom: 28px;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800; letter-spacing: -0.02em;
+  line-height: 1.15; margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 20%, var(--primary-light) 50%, var(--accent) 80%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 1.15rem; color: rgba(255,255,255,0.65);
+  max-width: 640px; margin: 0 auto 32px; line-height: 1.7;
+}
+.hero .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hero .btn-primary {
+  padding: 14px 32px; border-radius: 12px;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.hero .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,70,229,0.3); }
+.hero .btn-secondary {
+  padding: 14px 32px; border-radius: 12px;
+  background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15);
+  font-size: 1rem; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.hero .btn-secondary:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.hero .stats {
+  display: flex; justify-content: center; gap: 40px; margin-top: 48px;
+  padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.hero .stat-item { text-align: center; }
+.hero .stat-num {
+  font-size: 1.8rem; font-weight: 800; color: #fff;
+}
+.hero .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+/* ===== Sections ===== */
+.section {
+  padding: 80px 24px;
+  max-width: 1200px; margin: 0 auto;
+}
+.section-alt { background: var(--bg-alt); }
+.section-header {
+  text-align: center; margin-bottom: 48px;
+}
+.section-header .tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.section-header h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+.section-header p {
+  font-size: 1rem; color: var(--text-secondary);
+  max-width: 560px; margin: 0 auto; line-height: 1.7;
+}
+
+/* Section Color Variants */
+.section-tag-1 .tag { background: #eef2ff; color: #4f46e5; }
+.section-tag-2 .tag { background: #ecfeff; color: #0891b2; }
+.section-tag-3 .tag { background: #fffbeb; color: #d97706; }
+.section-tag-4 .tag { background: #ecfdf5; color: #059669; }
+.section-tag-5 .tag { background: #fdf2f8; color: #db2777; }
+.section-tag-6 .tag { background: #fff7ed; color: #ea580c; }
+
+/* ===== Feature Grid ===== */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.feature-card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  transition: all 0.25s ease; position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  opacity: 0; transition: opacity 0.25s;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  border-color: transparent;
+}
+.feature-card:hover::before { opacity: 1; }
+
+/* Card colors per section */
+.fc-1::before { background: #4f46e5; }
+.fc-1:hover { box-shadow: 0 12px 40px rgba(79,70,229,0.1); }
+.fc-2::before { background: #0891b2; }
+.fc-2:hover { box-shadow: 0 12px 40px rgba(8,145,178,0.1); }
+.fc-3::before { background: #d97706; }
+.fc-3:hover { box-shadow: 0 12px 40px rgba(217,119,6,0.1); }
+.fc-4::before { background: #059669; }
+.fc-4:hover { box-shadow: 0 12px 40px rgba(5,150,105,0.1); }
+.fc-5::before { background: #db2777; }
+.fc-5:hover { box-shadow: 0 12px 40px rgba(219,39,119,0.1); }
+.fc-6::before { background: #ea580c; }
+.fc-6:hover { box-shadow: 0 12px 40px rgba(234,88,12,0.1); }
+
+.feature-card .icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-bottom: 14px;
+}
+.fc-1 .icon { background: #eef2ff; }
+.fc-2 .icon { background: #ecfeff; }
+.fc-3 .icon { background: #fffbeb; }
+.fc-4 .icon { background: #ecfdf5; }
+.fc-5 .icon { background: #fdf2f8; }
+.fc-6 .icon { background: #fff7ed; }
+
+.feature-card .level-badge {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 600;
+  padding: 2px 10px; border-radius: 6px;
+  margin-bottom: 8px;
+}
+.fc-1 .level-badge { background: #eef2ff; color: #4f46e5; }
+.fc-2 .level-badge { background: #ecfeff; color: #0891b2; }
+.fc-3 .level-badge { background: #fffbeb; color: #d97706; }
+.fc-4 .level-badge { background: #ecfdf5; color: #059669; }
+.fc-5 .level-badge { background: #fdf2f8; color: #db2777; }
+.fc-6 .level-badge { background: #fff7ed; color: #ea580c; }
+
+.feature-card h3 {
+  font-size: 0.95rem; font-weight: 600; margin-bottom: 6px;
+}
+.feature-card p {
+  font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;
+}
+.feature-card .tags {
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.feature-card .tags span {
+  font-size: 0.68rem; padding: 2px 8px; border-radius: 4px; font-weight: 500;
+}
+.fc-1 .tags span { background: #eef2ff; color: #4338ca; }
+.fc-2 .tags span { background: #ecfeff; color: #0e7490; }
+.fc-3 .tags span { background: #fffbeb; color: #b45309; }
+.fc-4 .tags span { background: #ecfdf5; color: #047857; }
+.fc-5 .tags span { background: #fdf2f8; color: #be185d; }
+.fc-6 .tags span { background: #fff7ed; color: #c2410c; }
+
+/* ===== Resource Badge on Cards ===== */
+.feature-card .res-badges {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px;
+}
+.feature-card .res-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  text-decoration: none; transition: all 0.2s;
+}
+.feature-card .res-badge:hover { transform: translateY(-1px); filter: brightness(1.1); }
+.res-badge-dc { background: #0f172a; color: #facc15; border: 1px solid #facc15; }
+.res-badge-pg { background: #0f172a; color: #38bdf8; border: 1px solid #38bdf8; }
+.res-badge-dc::before { content: '📘'; font-size: 0.6rem; }
+.res-badge-pg::before { content: '📖'; font-size: 0.6rem; }
+.res-badge-lc { background: #0f172a; color: #22c55e; border: 1px solid #22c55e; }
+.res-badge-lc::before { content: '🦜'; font-size: 0.6rem; }
+.res-badge-hm { background: #0f172a; color: #a855f7; border: 1px solid #a855f7; }
+.res-badge-hm::before { content: '⚡'; font-size: 0.6rem; }
+.res-badge-dsh { background: #0f172a; color: #fb7185; border: 1px solid #fb7185; }
+.res-badge-dsh::before { content: '🧩'; font-size: 0.6rem; }
+.res-badge-ai { background: #0f172a; color: #f8fafc; border: 1px solid #64748b; }
+.res-badge-ai::before { content: '◉'; font-size: 0.6rem; }
+.res-badge-gov { background: #0f172a; color: #60a5fa; border: 1px solid #60a5fa; }
+.res-badge-gov::before { content: '🏛️'; font-size: 0.6rem; }
+
+/* ===== Learning Resources Section ===== */
+.resource-section { padding: 80px 24px; background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 100%); }
+.resource-section .inner { max-width: 1200px; margin: 0 auto; }
+.resource-section h2 {
+  text-align: center; font-size: 2rem; font-weight: 700;
+  color: #fff; margin-bottom: 12px;
+}
+.resource-section .subtitle {
+  text-align: center; color: rgba(255,255,255,0.5); font-size: 1rem;
+  max-width: 600px; margin: 0 auto 48px; line-height: 1.7;
+}
+
+/* Resource Intro Cards */
+.resource-intro-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 48px;
+}
+@media (max-width: 1000px) {
+  .resource-intro-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 660px) {
+  .resource-intro-grid { grid-template-columns: 1fr; }
+}
+.resource-intro-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); padding: 28px;
+  transition: all 0.3s;
+}
+.resource-intro-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); }
+.resource-intro-card .ri-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+}
+.resource-intro-card .ri-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.resource-intro-card .ri-icon.dc { background: rgba(250,204,21,0.15); }
+.resource-intro-card .ri-icon.pg { background: rgba(56,189,248,0.15); }
+.resource-intro-card .ri-name {
+  font-size: 1.1rem; font-weight: 700; color: #fff;
+}
+.resource-intro-card .ri-desc {
+  font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.7;
+  margin-bottom: 12px;
+}
+.resource-intro-card .ri-meta {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+}
+.resource-intro-card .ri-meta span {
+  font-size: 0.7rem; padding: 3px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.resource-intro-card .ri-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; font-weight: 600; color: var(--primary-light);
+  text-decoration: none; transition: all 0.2s;
+}
+.resource-intro-card .ri-link:hover { color: var(--accent); gap: 10px; }
+
+/* Resource Mapping Table */
+.resource-table-wrap {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); overflow-x: auto;
+}
+.resource-table {
+  width: 100%; border-collapse: collapse; min-width: 700px;
+}
+.resource-table th {
+  text-align: left; padding: 14px 18px;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;
+  color: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+.resource-table td {
+  padding: 12px 18px; font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.75); vertical-align: middle;
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table tr:hover td { background: rgba(255,255,255,0.04); }
+.resource-table .rt-layer {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.7rem; font-weight: 600; padding: 2px 10px; border-radius: 6px;
+}
+.rt-layer-1 { background: #eef2ff; color: #4f46e5; }
+.rt-layer-2 { background: #ecfeff; color: #0891b2; }
+.rt-layer-3 { background: #fffbeb; color: #d97706; }
+.rt-layer-4 { background: #ecfdf5; color: #059669; }
+.rt-layer-5 { background: #fdf2f8; color: #db2777; }
+.rt-layer-6 { background: #fff7ed; color: #ea580c; }
+.resource-table .rt-name { font-weight: 600; color: #fff; }
+.resource-table .rt-match {
+  text-align: center; font-size: 0.75rem;
+}
+.rt-match-perfect { color: #22c55e; }
+.rt-match-good { color: #facc15; }
+.rt-match-partial { color: #94a3b8; }
+.resource-table .rt-link {
+  color: var(--primary-light); text-decoration: none;
+  font-size: 0.75rem; transition: all 0.2s;
+}
+.resource-table .rt-link:hover { color: var(--accent); text-decoration: underline; }
+.resource-table .rt-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.resource-table .rt-links a {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.7rem; padding: 2px 8px; border-radius: 4px;
+  text-decoration: none; transition: all 0.2s;
+}
+.rt-link-dc { background: rgba(250,204,21,0.1); color: #facc15; border: 1px solid rgba(250,204,21,0.2); }
+.rt-link-dc:hover { background: rgba(250,204,21,0.2); }
+.rt-link-pg { background: rgba(56,189,248,0.1); color: #38bdf8; border: 1px solid rgba(56,189,248,0.2); }
+.rt-link-pg:hover { background: rgba(56,189,248,0.2); }
+.rt-link-lc { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+.rt-link-lc:hover { background: rgba(34,197,94,0.2); }
+.rt-link-hm { background: rgba(168,85,247,0.1); color: #a855f7; border: 1px solid rgba(168,85,247,0.2); }
+.rt-link-hm:hover { background: rgba(168,85,247,0.2); }
+.rt-link-dsh { background: rgba(251,113,133,0.1); color: #fb7185; border: 1px solid rgba(251,113,133,0.2); }
+.rt-link-dsh:hover { background: rgba(251,113,133,0.2); }
+
+/* ===== Roadmap ===== */
+.roadmap-section { padding: 80px 24px; background: #0f172a; }
+.roadmap-section .inner { max-width: 1100px; margin: 0 auto; }
+.roadmap-section h2 {
+  text-align: center; font-size: 2rem; font-weight: 700;
+  color: #fff; margin-bottom: 48px;
+}
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px; counter-reset: step;
+}
+.roadmap-item {
+  counter-increment: step; text-align: center;
+  padding: 28px 16px; border-radius: var(--radius);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s; position: relative;
+}
+.roadmap-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(79,70,229,0.3);
+  transform: translateY(-3px);
+}
+.roadmap-item .step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff; font-weight: 700; font-size: 0.9rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.roadmap-item h4 {
+  font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 4px;
+}
+.roadmap-item p {
+  font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.5;
+}
+
+/* ===== CTA Section ===== */
+.cta-section {
+  padding: 80px 24px; text-align: center;
+  background: linear-gradient(135deg, var(--primary), #3730a3);
+}
+.cta-section h2 {
+  font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 16px;
+}
+.cta-section p {
+  color: rgba(255,255,255,0.75); font-size: 1.05rem;
+  max-width: 500px; margin: 0 auto 28px;
+}
+.cta-section .btn-cta {
+  padding: 16px 40px; border-radius: 12px;
+  background: #fff; color: var(--primary-dark); border: none;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.cta-section .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+
+/* ===== Footer ===== */
+footer {
+  padding: 40px 24px; text-align: center;
+  background: #0f172a; border-top: 1px solid rgba(255,255,255,0.06);
+}
+footer p { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+footer .links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; }
+footer .links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+footer .links a:hover { color: var(--primary-light); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  nav .links { display: none; }
+  .hero .stats { gap: 24px; flex-wrap: wrap; }
+  .hero .stat-num { font-size: 1.4rem; }
+  .section { padding: 48px 16px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .roadmap-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.learning-path-link {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #0891b2;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0891b2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+}
+.learning-path-link:hover {
+  background: rgba(8,145,178,0.06);
+  border-color: currentColor;
+}
+.fc-1 .learning-path-link { color: #4f46e5; border-color: currentColor; }
+.fc-2 .learning-path-link { color: #0891b2; border-color: currentColor; }
+.fc-3 .learning-path-link { color: #d97706; border-color: currentColor; }
+.fc-4 .learning-path-link { color: #059669; border-color: currentColor; }
+.fc-5 .learning-path-link { color: #db2777; border-color: currentColor; }
+.fc-6 .learning-path-link { color: #ea580c; border-color: currentColor; }
+.section-quiz-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 18px; padding: 8px 18px; border: 1px solid currentColor;
+  border-radius: 999px; font-family: 'Space Mono', monospace;
+  font-size: 11px; letter-spacing: 0.05em; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.section-quiz-link:hover { transform: translateY(-2px); background: rgba(15,23,42,0.04); }
+.section-tag-1 .section-quiz-link { color: #4f46e5; }
+.section-tag-2 .section-quiz-link { color: #0891b2; }
+.section-tag-3 .section-quiz-link { color: #d97706; }
+.section-tag-4 .section-quiz-link { color: #059669; }
+.section-tag-5 .section-quiz-link { color: #db2777; }
+.section-tag-6 .section-quiz-link { color: #ea580c; }
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<nav>
+  <div class="inner">
+    <a href="#" class="logo">
+      <span class="mark">AI</span>
+      <span>能力地图</span>
+    </a>
+    <div class="links">
+      <a href="#foundation">认知地基</a>
+      <a href="#skills">核心技能</a>
+      <a href="#product">产品应用</a>
+      <a href="#business">业务赋能</a>
+      <a href="#efficiency">个人提效</a>
+      <a href="#income">副业变现</a>
+      <a href="#resources" style="color:#facc15;font-weight:600;">📚 学习资源</a>
+    </div>
+    <a href="#roadmap" class="cta-btn">开始学习 →</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="inner">
+    <div class="badge">
+      <span>✦</span> 2026 年最新版 <span>✦</span>
+    </div>
+    <h1>从零到一<br>构建你的 AI 能力体系</h1>
+    <p>
+      专为 AI 产品经理设计的系统性能力地图。<br>
+      覆盖认知地基、核心技能、产品应用、业务赋能、个人提效与副业变现六大维度。
+    </p>
+    <div class="actions">
+      <a href="#foundation" class="btn-primary">
+        <span>📖</span> 探索能力地图
+      </a>
+      <a href="#roadmap" class="btn-secondary">
+        <span>🗺️</span> 查看学习路径
+      </a>
+      <a href="#resources" class="btn-secondary" style="background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.2);">
+        <span>📚</span> 推荐学习资源
+      </a>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">6</div>
+        <div class="stat-label">能力层级</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">42</div>
+        <div class="stat-label">核心能力项</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">推荐资源</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">42</div>
+        <div class="stat-label">能力匹配项</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2026</div>
+        <div class="stat-label">最新趋势</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 1 ===== -->
+<section class="section" id="foundation">
+  <div class="section-header section-tag-1">
+    <div class="tag">🧱 LAYER 01</div>
+    <h2>认知地基</h2>
+    <p>AI 产品经理的必修基本功 — 理解 AI 技术本质，建立技术判断力</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l1">[ 开始 L1 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-1">
+      <div class="icon">📜</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 发展简史与关键里程碑</h3>
+      <p>从 Transformer 架构（2017）→ GPT 系列 → 多模态爆发 → Agent 元年（2025-2026）。理解技术演进脉络，才能预判产品方向。</p>
+      <div class="tags">
+        <span>Transformer</span><span>GPT-4o/5</span><span>Claude 4</span><span>DeepSeek-R1/V4</span><span>Gemini 2.5</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">Deep Dive Claude Code</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/models" target="_blank">提示工程指南</a>
+      </div>
+    </div>
+    <div class="feature-card fc-1">
+      <div class="icon">🧠</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>大模型核心原理（非技术版）</h3>
+      <p>理解 Transformer 的"注意力"本质、大模型训练全流程（预训练 → 梯度回传更新参数 → 参数冻结/Checkpoint 保存 → 推理输出）、Token 经济学、上下文窗口的意义。不写代码，但懂原理。</p>
+      <div class="tags">
+        <span>注意力机制</span><span>预训练</span><span>梯度回传</span><span>参数冻结</span><span>Checkpoint</span><span>SFT</span><span>RLHF</span><span>Token</span><span>上下文窗口</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/models" target="_blank">提示工程指南 · 模型介绍</a>
+      </div>
+    </div>
+    <div class="feature-card fc-1">
+      <div class="icon">📊</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>模型选型与成本评估</h3>
+      <p>闭源 vs 开源、通用 vs 垂直、云端 vs 本地部署。掌握 API 定价模型、推理成本测算、延迟与质量权衡，做出技术选型决策。</p>
+      <div class="tags">
+        <span>GPT-5</span><span>Claude 4</span><span>DeepSeek</span><span>Llama 4</span><span>Qwen3</span><span>Mistral</span><span>MoE</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/models/collection" target="_blank">提示工程指南 · 模型集合</a>
+      </div>
+    </div>
+    <div class="feature-card fc-1">
+      <div class="icon">⚡</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>算力与基础设施认知</h3>
+      <p>了解 GPU（H100/B200/Gaudi 3）、推理优化技术（量化/蒸馏/投机解码）、云服务（Vertex AI/Bedrock/阿里云百炼）等基础设施生态。</p>
+      <div class="tags">
+        <span>GPU</span><span>量化</span><span>蒸馏</span><span>vLLM</span><span>MCP协议</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch07" target="_blank">Deep Dive Claude Code · MCP协议</a>
+      </div>
+    </div>
+    <div class="feature-card fc-1">
+      <div class="icon">🔭</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 趋势追踪与前沿洞察</h3>
+      <p>建立系统化的 AI 前沿追踪体系：关键信息源筛选（论文/博客/开源项目/行业报告）、信号与噪音区分、技术成熟度判断（Gartner Hype Cycle 思维）、定期知识输出与团队分享机制。</p>
+      <div class="tags">
+        <span>信息源管理</span><span>信号识别</span><span>成熟度判断</span><span>技术雷达</span><span>前沿简报</span>
+      </div>
+    </div>
+    <div class="feature-card fc-1">
+      <div class="icon">🔄</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 时代 PM 岗位价值重塑</h3>
+      <p>理解 AI 如何重新定义产品经理的核心竞争力：哪些能力被 AI 增强（信息整合/文档撰写/数据分析）、哪些不可替代（战略判断/用户共情/跨域决策）、如何将 AI 转化为个人"超级杠杆"而非威胁。</p>
+      <div class="tags">
+        <span>能力重构</span><span>人机协作</span><span>战略判断</span><span>超级杠杆</span><span>不可替代性</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 2 ===== -->
+<section class="section section-alt" id="skills">
+  <div class="section-header section-tag-2">
+    <div class="tag">⚙️ LAYER 02</div>
+    <h2>核心技能</h2>
+    <p>产品经理需要亲手掌握的 AI 实操能力 — 动手才是真理解</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l2">[ 开始 L2 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-2">
+      <div class="icon">💬</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>提示与上下文工程</h3>
+      <p>从“写好一句 Prompt”升级为管理模型每次推理看到的完整信息：系统指令、示例、工具定义、MCP、外部数据、消息历史、记忆与上下文压缩。</p>
+      <div class="tags">
+        <span>System Prompt</span><span>Few-shot</span><span>Tool Context</span><span>Memory</span><span>Compaction</span><span>Context Budget</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/introduction" target="_blank">提示工程指南 · 入门</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/techniques" target="_blank">提示工程指南 · 技术</a>
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch08" target="_blank">Deep Dive Claude Code · Plugin生态</a>
+      </div>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">🔍</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>RAG 检索增强生成</h3>
+      <p>构建企业级知识问答系统的核心范式：文档分块→向量化→检索→重排序→生成。掌握 Embedding 模型选型、Chunk 策略、Hybrid Search 等关键环节。</p>
+      <div class="tags">
+        <span>Embedding</span><span>向量数据库</span><span>Milvus</span><span>Chroma</span><span>重排序</span><span>GraphRAG</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/techniques/rag" target="_blank">提示工程指南 · RAG技术</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/research/rag" target="_blank">提示工程指南 · RAG研究</a>
+        <a class="res-badge res-badge-lc" href="https://python.langchain.com/docs/tutorials/rag/" target="_blank">LangChain · RAG教程</a>
+      </div>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">🤖</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI Agent / 智能体</h3>
+      <p>2025-2026 年最热门的 AI 范式。理解 Tool Use、Function Calling、Planning、Memory、Multi-Agent 协作等核心机制。Agent 是 AI 产品从"聊天"走向"行动"的关键。</p>
+      <div class="tags">
+        <span>Function Calling</span><span>Tool Use</span><span>MCP协议</span><span>LangGraph</span><span>AutoGen</span><span>CrewAI</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">Deep Dive Claude Code · Agent Loop</a>
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch09" target="_blank">Deep Dive Claude Code · Multi-Agent</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/agents" target="_blank">提示工程指南 · Agents</a>
+        <a class="res-badge res-badge-lc" href="https://docs.langchain.com/oss/python/langchain/agents" target="_blank">LangChain · Agents</a>
+        <a class="res-badge res-badge-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/" target="_blank">Hermes Agent · 自我改进智能体</a>
+      </div>
+      <a class="learning-path-link" href="ai-agent-learning-path.html">[ 进入学习路径 ]</a>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">🎨</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>多模态能力应用</h3>
+      <p>2026 年多模态已全面成熟：图像理解、文生图、语音对话、视频生成、音视频分析。产品经理需要理解各模态的能力边界和成本结构。</p>
+      <div class="tags">
+        <span>GPT-4o/5</span><span>Claude Vision</span><span>Sora</span><span>Veo 2</span><span>Midjourney V7</span><span>Flux</span><span>Hailuo</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/guides/4o-image-generation" target="_blank">提示工程指南 · 4o图像生成</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/models/sora" target="_blank">提示工程指南 · Sora</a>
+      </div>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">🔧</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>模型微调与定制（LoRA / Fine-tuning）</h3>
+      <p>了解何时需要微调 vs RAG，掌握 LoRA/QLoRA 等高效微调方法、数据准备策略、评估方法论。在垂直场景中打造专属模型能力。</p>
+      <div class="tags">
+        <span>LoRA</span><span>QLoRA</span><span>DPO</span><span>数据集构建</span><span>评估</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/applications/finetuning-gpt4o" target="_blank">提示工程指南 · 微调</a>
+      </div>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">💻</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 编程辅助与低代码</h3>
+      <p>熟练使用 AI 编程助手（Copilot / Cursor / Windsurf）辅助原型开发，掌握自然语言→代码的转换能力。PM 不需要成为工程师，但需要能"用 AI 写原型"。</p>
+      <div class="tags">
+        <span>GitHub Copilot</span><span>Cursor</span><span>Claude Code</span><span>Bolt.new</span><span>v0.dev</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">Deep Dive Claude Code · 全书</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/applications/coding" target="_blank">提示工程指南 · Coding</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/applications/function_calling" target="_blank">提示工程指南 · Function Calling</a>
+      </div>
+    </div>
+    <div class="feature-card fc-2">
+      <div class="icon">🧩</div>
+      <span class="level-badge">◎ 进阶</span>
+      <h3>Agent Harness 与智能体运行时</h3>
+      <p>如果模型是“大脑”、工具是“手脚”，Harness 就是智能体的操作系统与总控台。理解 Agent Loop、上下文与会话、工具执行、权限沙箱、事件追踪和插件扩展，才能把 Agent 从 Demo 组装成可运行、可治理的产品。</p>
+      <div class="tags">
+        <span>Agent Loop</span><span>Plugin Architecture</span><span>Cordis</span><span>Tool Pipeline</span><span>Session Log</span><span>Sandbox</span><span>Observability</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dsh" href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">DeepSeek Harness</a>
+        <a class="res-badge res-badge-dsh" href="deepseek-harness/docs/architecture.zh.md" target="_blank">架构说明</a>
+        <a class="res-badge res-badge-dsh" href="deepseek-harness/docs/cookbook/extension-cookbook.zh.md" target="_blank">插件扩展手册</a>
+        <a class="res-badge res-badge-dsh" href="https://github.com/cordiverse/paper" target="_blank">Cordis 设计论文</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 3 ===== -->
+<section class="section" id="product">
+  <div class="section-header section-tag-3">
+    <div class="tag">📱 LAYER 03</div>
+    <h2>产品应用能力</h2>
+    <p>将 AI 能力转化为可落地产品的方法论与设计思维</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l3">[ 开始 L3 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-3">
+      <div class="icon">🧭</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 产品战略与场景机会识别</h3>
+      <p>在设计方案前先判断“为什么做、做什么、是否真的需要 AI”。掌握用户任务与工作流拆解、AI vs 规则 vs Agent 判断、机会优先级和产品组合路线图。</p>
+      <div class="tags">
+        <span>机会识别</span><span>工作流拆解</span><span>Agent适用性</span><span>优先级矩阵</span><span>产品路线图</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-ai" href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" target="_blank">OpenAI · Agent 场景判断</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">🎯</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 产品设计方法论</h3>
+      <p>从"确定性问题"到"概率性输出"的思维转变。掌握 AI 产品的分层设计：交互层→推理层→数据层→基础设施层。学会管理"幻觉"这个 AI 产品的固有特性。</p>
+      <div class="tags">
+        <span>对话式UI</span><span>渐进式披露</span><span>Human-in-loop</span><span>置信度展示</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">Deep Dive Claude Code · 设计模式</a>
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">Deep Dive Claude Code · 工程哲学</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">♻️</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 数据策略与反馈飞轮</h3>
+      <p>把数据从“模型原料”升级为产品资产：规划来源、权利、质量与版本，并将用户纠错和生产 Trace 转化为评测集、知识更新和持续改进。</p>
+      <div class="tags">
+        <span>数据策略</span><span>反馈闭环</span><span>Trace→Eval</span><span>数据权利</span><span>持续改进</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-ai" href="https://openai.com/index/building-self-improving-tax-agents-with-codex/" target="_blank">OpenAI · 生产反馈飞轮</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">🧪</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 产品评估与测试</h3>
+      <p>建立 AI 产品的质量评估体系：准确性、一致性、安全性、鲁棒性。掌握红队测试（Red Teaming）、自动评估（LLM-as-Judge）、A/B 测试方法论。</p>
+      <div class="tags">
+        <span>红队测试</span><span>LLM-as-Judge</span><span>RAGAS</span><span>A/B测试</span><span>评估集</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/risks/adversarial" target="_blank">提示工程指南 · 对抗性测试</a>
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">Deep Dive Claude Code · 测试策略</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">🛡️</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI / Agent 安全与权限治理</h3>
+      <p>当 Agent 能读取数据和执行真实动作，安全不再只是内容审核。掌握威胁建模、Prompt Injection、防越权、最小权限、身份授权、关键动作审批、审计与事故响应。</p>
+      <div class="tags">
+        <span>Threat Model</span><span>Prompt Injection</span><span>最小权限</span><span>身份授权</span><span>审计</span><span>事件响应</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-gov" href="https://www.nist.gov/news-events/news/2026/02/new-concept-paper-identity-and-authority-software-agents" target="_blank">NIST · Agent 身份与授权</a>
+        <a class="res-badge res-badge-ai" href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/" target="_blank">OWASP · Agentic Security</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">⚖️</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 合规与伦理</h3>
+      <p>2026 年全球 AI 监管框架日趋成熟：欧盟 AI Act、中国生成式 AI 管理办法、美国行政令。PM 需要理解数据隐私、版权、偏见、可解释性等合规红线。</p>
+      <div class="tags">
+        <span>AI Act</span><span>数据隐私</span><span>版权</span><span>偏见检测</span><span>可解释性</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/risks/factuality" target="_blank">提示工程指南 · 真实性</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/risks/biases" target="_blank">提示工程指南 · 偏见</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">📡</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 上线运营与持续监控</h3>
+      <p>离线评测通过不等于生产稳定。建立功能、运行、人因、安全、合规与影响监控，管理质量漂移、模型版本、SLA、成本异常、事故、回滚和供应商变更。</p>
+      <div class="tags">
+        <span>LLMOps</span><span>AgentOps</span><span>生产监控</span><span>质量漂移</span><span>SLA</span><span>回滚复盘</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-gov" href="https://www.nist.gov/news-events/news/2026/03/new-report-challenges-monitoring-deployed-ai-systems" target="_blank">NIST · AI 生产监控</a>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">📈</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 产品数据分析</h3>
+      <p>掌握 AI 产品特有的数据指标：Token 消耗、推理延迟、召回率、拒绝率、用户留存与 AI 交互深度。用数据驱动 AI 产品迭代。</p>
+      <div class="tags">
+        <span>产品指标</span><span>成本分析</span><span>用户行为</span><span>迭代策略</span>
+      </div>
+    </div>
+    <div class="feature-card fc-3">
+      <div class="icon">🏗️</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>原型与 Demo 快速构建</h3>
+      <p>使用 AI 辅助工具快速搭建产品原型：从流程图→交互原型→可运行 Demo。2026 年已可实现"一句话生成完整 Web 应用"。</p>
+      <div class="tags">
+        <span>Bolt.new</span><span>Lovable</span><span>Replit Agent</span><span>Figma AI</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">Deep Dive Claude Code · AI编程</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 4 ===== -->
+<section class="section section-alt" id="business">
+  <div class="section-header section-tag-4">
+    <div class="tag">🏢 LAYER 04</div>
+    <h2>业务赋能能力</h2>
+    <p>将 AI 落地到真实业务场景，创造可衡量的商业价值</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l4">[ 开始 L4 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-4">
+      <div class="icon">🤝</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 客服与智能助手</h3>
+      <p>最成熟的 AI 落地场景。掌握意图识别→知识检索→多轮对话→工单升级的全链路设计。2026 年 AI 客服已能处理 80%+ 的常见问题。</p>
+      <div class="tags">
+        <span>RAG</span><span>意图识别</span><span>多轮对话</span><span>知识库</span><span>人机协作</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/techniques/rag" target="_blank">提示工程指南 · RAG</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/agents" target="_blank">提示工程指南 · Agents</a>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">📢</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 营销内容生成</h3>
+      <p>从文案撰写→图像生成→视频制作→个性化推荐的全链路 AI 营销。掌握 AIGC 工作流设计、品牌一致性控制、批量生产效率优化。</p>
+      <div class="tags">
+        <span>文生文</span><span>文生图</span><span>文生视频</span><span>Sora</span><span>Runway</span><span>可灵</span>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">📊</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 数据分析与商业智能</h3>
+      <p>自然语言查询数据库、自动生成分析报告、智能数据可视化。PM 可以用 AI 将数据分析效率提升 10 倍，做到"问即所得"。</p>
+      <div class="tags">
+        <span>NL2SQL</span><span>自动分析</span><span>智能BI</span><span>数据洞察</span><span>决策辅助</span>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">📚</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 知识管理</h3>
+      <p>构建企业知识库、智能文档检索、自动知识萃取。使用 RAG + Graph 技术打通企业知识孤岛，实现"全公司知识一问即答"。</p>
+      <div class="tags">
+        <span>知识库</span><span>GraphRAG</span><span>文档解析</span><span>知识图谱</span>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">⚡</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 流程自动化（AI + RPA）</h3>
+      <p>将 AI 决策能力与传统 RPA 结合，实现端到端的智能流程自动化。适用于财务对账、合同审核、简历筛选等高频重复场景。</p>
+      <div class="tags">
+        <span>AI Agent</span><span>RPA</span><span>工作流</span><span>n8n</span><span>Zapier AI</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">Deep Dive Claude Code · Agent</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/agents/ai-workflows-vs-ai-agents" target="_blank">提示工程指南 · Workflows vs Agents</a>
+        <a class="res-badge res-badge-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/features/cron" target="_blank">Hermes Agent · 定时自动化</a>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">🛠️</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 辅助研发效能</h3>
+      <p>AI 代码生成→代码审查→测试生成→文档维护的全流程赋能。PM 需要理解 AI 如何改变研发流程，以便更准确地评估研发效能提升。</p>
+      <div class="tags">
+        <span>代码生成</span><span>自动测试</span><span>代码审查</span><span>文档生成</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">Deep Dive Claude Code · 全书</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/applications/coding" target="_blank">提示工程指南 · Coding</a>
+        <a class="res-badge res-badge-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/cli" target="_blank">Hermes Agent · 研发工作流</a>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">🏛️</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 驱动的组织变革管理</h3>
+      <p>理解 AI 如何重塑组织架构与团队协作模式：从"AI 工具使用者"到"AI 转型推动者"的角色升级、跨职能 AI 小组搭建、AI 文化培育（拥抱实验/容忍失败/数据驱动）、管理层 AI 认知对齐与变革沟通策略。</p>
+      <div class="tags">
+        <span>组织架构</span><span>变革管理</span><span>AI文化</span><span>跨职能协作</span><span>转型推动</span>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">📐</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 实践落地与价值验证</h3>
+      <p>将 AI 从"实验玩具"推向"生产力引擎"：建立 AI 项目的可量化 KPI 体系（效率提升%/质量改善%/成本降低%）、A/B 验证方法论、ROI 测算模型、从 PoC → 试点 → 规模化落地的路径设计。让 AI 的价值"看得见、算得清"。</p>
+      <div class="tags">
+        <span>KPI体系</span><span>ROI测算</span><span>A/B验证</span><span>规模化</span><span>PoC→落地</span>
+      </div>
+    </div>
+    <div class="feature-card fc-4">
+      <div class="icon">📦</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 产品商业化与增长</h3>
+      <p>把技术能力转化为可持续业务：设计价值主张、套餐与计费方式，核算单位经济，规划 GTM、采购路径、采用激活、客户成功和规模化增长。</p>
+      <div class="tags">
+        <span>价值主张</span><span>定价包装</span><span>单位经济</span><span>GTM</span><span>采用增长</span><span>客户成功</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-ai" href="https://academy.openai.com/public/clubs/champions-ecqup/resources/workflow-discovery-and-prioritization-matrix-2026-05-05" target="_blank">OpenAI · 机会优先级</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 5 ===== -->
+<section class="section" id="efficiency">
+  <div class="section-header section-tag-5">
+    <div class="tag">🚀 LAYER 05</div>
+    <h2>个人提效能力</h2>
+    <p>用 AI 武装自己，将工作效率提升 10 倍的核心技能</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l5">[ 开始 L5 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-5">
+      <div class="icon">🔎</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 搜索与信息整合</h3>
+      <p>掌握 AI 搜索工具（Perplexity/360AI 搜索/天工搜索）的高级用法。从被动搜索到主动信息整合，将调研效率提升 10 倍。</p>
+      <div class="tags">
+        <span>Perplexity</span><span>360AI搜索</span><span>天工搜索</span><span>联网搜索</span>
+      </div>
+    </div>
+    <div class="feature-card fc-5">
+      <div class="icon">📝</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 文档与报告写作</h3>
+      <p>用 AI 生成 PRD、MRD、竞品分析、周报月报、商业计划书。掌握"AI 写初稿→人工精修"的高效工作流，让 AI 处理结构化内容。</p>
+      <div class="tags">
+        <span>PRD生成</span><span>竞品分析</span><span>报告写作</span><span>结构化输出</span>
+      </div>
+    </div>
+    <div class="feature-card fc-5">
+      <div class="icon">🗂️</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 会议与信息管理</h3>
+      <p>AI 会议纪要（通义听悟/Fireflies）、AI 知识整理（Notion AI/Obsidian AI）、AI 日程管理。让 AI 处理信息整理类重复劳动。</p>
+      <div class="tags">
+        <span>通义听悟</span><span>Fireflies</span><span>Notion AI</span><span>Obsidian AI</span>
+      </div>
+    </div>
+    <div class="feature-card fc-5">
+      <div class="icon">📖</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 学习与知识获取</h3>
+      <p>用 AI 加速学习：AI 导师对话式学习、论文/文档智能摘要、代码解释、外语学习。掌握"不会就问 AI"的敏捷学习模式。</p>
+      <div class="tags">
+        <span>AI导师</span><span>智能摘要</span><span>对话学习</span><span>知识卡片</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">Deep Dive Claude Code · 源码学习</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh" target="_blank">提示工程指南 · 系统学习</a>
+      </div>
+    </div>
+    <div class="feature-card fc-5">
+      <div class="icon">🧩</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 决策辅助</h3>
+      <p>用 AI 进行 SWOT 分析、数据驱动的决策建议、多方案评估矩阵。AI 不是替你做决定，而是帮你看到更多维度和可能性。</p>
+      <div class="tags">
+        <span>决策框架</span><span>多维评估</span><span>风险分析</span><span>模拟推演</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Layer 6 ===== -->
+<section class="section section-alt" id="income">
+  <div class="section-header section-tag-6">
+    <div class="tag">💰 LAYER 06</div>
+    <h2>副业变现能力</h2>
+    <p>将 AI 技能转化为可落地的副业收入来源</p>
+    <a class="section-quiz-link" href="ai-capability-quiz.html?layer=l6">[ 开始 L6 测验 · 8 题 ]</a>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card fc-6">
+      <div class="icon">📱</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 自媒体内容创作</h3>
+      <p>利用 AI 矩阵化生产图文/短视频内容：AI 写脚本→AI 配图→AI 配音→AI 剪辑。在小红书/抖音/YouTube 等平台建立 AI 辅助内容矩阵。</p>
+      <div class="tags">
+        <span>内容矩阵</span><span>AI脚本</span><span>AI配音</span><span>AI剪辑</span><span>数字人</span>
+      </div>
+    </div>
+    <div class="feature-card fc-6">
+      <div class="icon">🛠️</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 工具开发（无代码/低代码）</h3>
+      <p>使用 Bolt.new / Cursor / Lovable 等工具，无需编程基础即可开发 AI 应用。2026 年的趋势是"PM 用 AI 自己写产品原型"。</p>
+      <div class="tags">
+        <span>Bolt.new</span><span>Cursor</span><span>Claude Code</span><span>AI工作流</span><span>n8n</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch02" target="_blank">Deep Dive Claude Code · 工具架构</a>
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch07" target="_blank">Deep Dive Claude Code · MCP协议</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/agents/function-calling" target="_blank">提示工程指南 · Function Calling</a>
+        <a class="res-badge res-badge-lc" href="https://docs.langchain.com/oss/python/langchain/agents" target="_blank">LangChain · Agent开发</a>
+        <a class="res-badge res-badge-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/features/skills" target="_blank">Hermes Agent · 技能开发</a>
+      </div>
+    </div>
+    <div class="feature-card fc-6">
+      <div class="icon">🎓</div>
+      <span class="level-badge">★ 必修</span>
+      <h3>AI 咨询与培训</h3>
+      <p>为企业提供 AI 应用咨询、员工 AI 培训、AI 工作流设计服务。2026 年大量传统企业急需 AI 转型顾问，这是一个巨大的蓝海市场。</p>
+      <div class="tags">
+        <span>AI咨询</span><span>企业培训</span><span>工作流设计</span><span>转型顾问</span>
+      </div>
+    </div>
+    <div class="feature-card fc-6">
+      <div class="icon">🎭</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 数字人 / 虚拟主播</h3>
+      <p>利用 HeyGen / D-ID / 剪映数字人等工具创建 AI 数字人，用于直播带货、课程讲师、客服前台等场景。2026 年数字人已高度逼真。</p>
+      <div class="tags">
+        <span>HeyGen</span><span>D-ID</span><span>剪映数字人</span><span>虚拟直播</span>
+      </div>
+    </div>
+    <div class="feature-card fc-6">
+      <div class="icon">📋</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 数据标注与微调服务</h3>
+      <p>为垂直行业提供数据标注、数据集构建、模型微调服务。专业领域（医疗/法律/金融）的 AI 数据服务有高附加值。</p>
+      <div class="tags">
+        <span>数据标注</span><span>数据集</span><span>微调服务</span><span>垂直领域</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/zh/applications/finetuning-gpt4o" target="_blank">提示工程指南 · 微调</a>
+      </div>
+    </div>
+    <div class="feature-card fc-6">
+      <div class="icon">☁️</div>
+      <span class="level-badge">◎ 拓展</span>
+      <h3>AI 自动化服务（SaaS + Agent）</h3>
+      <p>开发面向特定场景的 AI Agent 自动化服务：简历筛选、合同审核、社交媒体管理、电商运营等。按次/按月收费的轻量 SaaS 模式。</p>
+      <div class="tags">
+        <span>AI SaaS</span><span>自动化</span><span>Agent服务</span><span>订阅模式</span>
+      </div>
+      <div class="res-badges">
+        <a class="res-badge res-badge-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">Deep Dive Claude Code · Agent</a>
+        <a class="res-badge res-badge-pg" href="https://www.promptingguide.ai/agents/deep-agents" target="_blank">提示工程指南 · Deep Agents</a>
+        <a class="res-badge res-badge-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/messaging/" target="_blank">Hermes Agent · 多渠道自动化</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Roadmap ===== -->
+<section class="roadmap-section" id="roadmap">
+  <div class="inner">
+    <h2>🗺️ 建议学习路径（0 → 1 → N）</h2>
+    <div class="roadmap-grid">
+      <div class="roadmap-item">
+        <div class="step-num">1</div>
+        <h4>第 1-2 周</h4>
+        <p>建立认知地基<br>理解 AI 核心概念与模型选型</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(250,204,21,0.6);">📖 提示工程指南·模型</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="step-num">2</div>
+        <h4>第 3-4 周</h4>
+        <p>掌握提示与上下文工程<br>熟练使用 AI 提效工具</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(56,189,248,0.6);">📖 提示工程指南·技术</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="step-num">3</div>
+        <h4>第 5-8 周</h4>
+        <p>深入 RAG + Agent<br>理解产品化核心范式</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(250,204,21,0.6);">📘 DC·Agent系统</div>
+        <div style="font-size:0.7rem;color:rgba(56,189,248,0.6);">📖 提示工程指南·Agents</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="step-num">4</div>
+        <h4>第 9-12 周</h4>
+        <p>业务场景落地<br>完成第一个 AI 产品项目</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(250,204,21,0.6);">📘 DC·工具架构+MCP</div>
+        <div style="font-size:0.7rem;color:rgba(56,189,248,0.6);">📖 提示工程指南·RAG</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="step-num">5</div>
+        <h4>第 13-16 周</h4>
+        <p>AI 自动化 + 副业<br>打造个人 AI 收入管道</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(250,204,21,0.6);">📘 DC·权限+安全</div>
+        <div style="font-size:0.7rem;color:rgba(56,189,248,0.6);">📖 Function Calling</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="step-num">6</div>
+        <h4>持续进化</h4>
+        <p>跟踪前沿动态<br>建立个人 AI 知识体系</p>
+        <div style="margin-top:8px;font-size:0.7rem;color:rgba(250,204,21,0.6);">📘 DC·设计模式+工程哲学</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Learning Resources ===== -->
+<section class="resource-section" id="resources">
+  <div class="inner">
+    <h2>📚 推荐学习资源</h2>
+    <p class="subtitle">基于能力地图的每一项能力，我们为你匹配了最优质的学习资源。点击即可直达对应章节。</p>
+
+    <div class="resource-intro-grid">
+      <div class="resource-intro-card">
+        <div class="ri-header">
+          <div class="ri-icon dc">📘</div>
+          <div class="ri-name">Deep Dive Claude Code<br><span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:400;">Claude Code Agent 架构与工程实践</span></div>
+        </div>
+        <div class="ri-desc">
+          以可运行示例拆解 Claude Code 的 Agent Loop、工具系统、权限、上下文、MCP、插件、多 Agent 与生产化模式，帮助产品经理理解 Agent 能力背后的工程边界。
+        </div>
+        <div class="ri-meta">
+          <span>📄 13 个专题章节</span>
+          <span>🔧 可视化 + 可运行示例</span>
+          <span>🤖 Agent Loop</span>
+          <span>🔌 MCP 协议</span>
+          <span>🛡️ 权限安全</span>
+        </div>
+        <a class="ri-link" href="https://deep-dive-claude-code.vercel.app/" target="_blank">
+          访问资源 →<span style="font-size:0.7rem;opacity:0.5;"> deep-dive-claude-code.vercel.app</span>
+        </a>
+      </div>
+
+      <div class="resource-intro-card">
+        <div class="ri-header">
+          <div class="ri-icon" style="background:rgba(251,113,133,0.15);">🧩</div>
+          <div class="ri-name">DeepSeek Harness<br><span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:400;">插件化 Agent Harness</span></div>
+        </div>
+        <div class="ri-desc">
+          DeepSeek AI 开源的智能体运行框架，由 Cordis 驱动并采用“一切皆插件”的架构。模型适配器、Agent Loop、工具、会话日志、权限、沙箱、UI 与子 Agent 都可通过配置和扩展点组合或替换。
+        </div>
+        <div class="ri-meta">
+          <span>🧩 一切皆插件</span>
+          <span>🔄 Agent Loop</span>
+          <span>🛠️ 工具执行管线</span>
+          <span>🧾 可回放会话日志</span>
+          <span>🛡️ 权限与沙箱</span>
+        </div>
+        <a class="ri-link" href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">
+          访问资源 →<span style="font-size:0.7rem;opacity:0.5;"> github.com/deepseek-ai</span>
+        </a>
+      </div>
+
+      <div class="resource-intro-card">
+        <div class="ri-header">
+          <div class="ri-icon pg">📖</div>
+          <div class="ri-name">提示工程指南<br><span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:400;">Prompt Engineering Guide</span></div>
+        </div>
+        <div class="ri-desc">
+          由 DAIR.AI 维护的系统化提示工程知识体系。覆盖从基础概念到高级技术、从应用到风险的全方位内容，包含大量实战示例和最佳实践。
+        </div>
+        <div class="ri-meta">
+          <span>💬 提示技术 20+</span>
+          <span>🤖 Agents 专区</span>
+          <span>🔍 RAG 专题</span>
+          <span>⚠️ 风险与偏见</span>
+          <span>📊 模型对比</span>
+        </div>
+        <a class="ri-link" href="https://www.promptingguide.ai/zh" target="_blank">
+          访问资源 →<span style="font-size:0.7rem;opacity:0.5;"> promptingguide.ai</span>
+        </a>
+      </div>
+
+      <div class="resource-intro-card">
+        <div class="ri-header">
+          <div class="ri-icon" style="background:rgba(168,85,247,0.15);">⚡</div>
+          <div class="ri-name">Hermes Agent<br><span style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:400;">自我改进的 AI 智能体</span></div>
+        </div>
+        <div class="ri-desc">
+          由 Nous Research 构建的开源 AI 智能体。唯一内置学习循环的智能体——从经验中创建技能、在使用中持续改进、跨会话持久记忆。支持 20+ 消息平台、70+ 内置工具、MCP 协议、定时自动化。
+        </div>
+        <div class="ri-meta">
+          <span>🤖 自我学习循环</span>
+          <span>📚 技能系统</span>
+          <span>🔌 MCP 集成</span>
+          <span>💬 20+ 平台</span>
+          <span>🧠 持久记忆</span>
+        </div>
+        <a class="ri-link" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/" target="_blank">
+          访问资源 →<span style="font-size:0.7rem;opacity:0.5;"> hermes-agent.nousresearch.com</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="resource-table-wrap">
+      <table class="resource-table">
+        <thead>
+          <tr>
+            <th style="width:70px;">层级</th>
+            <th style="width:200px;">能力项</th>
+            <th style="width:100px;text-align:center;">📘<br>Claude Code</th>
+            <th style="width:100px;text-align:center;">📖<br>Prompt Guide</th>
+            <th>学习链接</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Layer 1 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">AI 发展简史与关键里程碑</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">📘 全书背景</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/models" target="_blank">📖 模型发展</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">大模型核心原理</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/models" target="_blank">📖 模型介绍</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/introduction/settings" target="_blank">📖 模型设置</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">模型选型与成本评估</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/models/collection" target="_blank">📖 模型集合</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">算力与基础设施认知</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch07" target="_blank">📘 MCP协议</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">AI 趋势追踪与前沿洞察</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/models" target="_blank">📖 模型演进</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/research" target="_blank">📖 研究前沿</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-1">L1 认知</span></td>
+            <td class="rt-name">AI 时代 PM 岗位价值重塑</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">📘 工程哲学</a>
+            </div></td>
+          </tr>
+          <!-- Layer 2 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">提示与上下文工程</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-perfect">★ 完美</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch08" target="_blank">📘 Plugin生态</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/introduction" target="_blank">📖 提示入门</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/techniques" target="_blank">📖 提示技术</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">RAG 检索增强生成</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/techniques/rag" target="_blank">📖 RAG技术</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/research/rag" target="_blank">📖 RAG研究</a>
+              <a class="rt-link-lc" href="https://python.langchain.com/docs/tutorials/rag/" target="_blank">🦜 LangChain RAG</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">AI Agent / 智能体</td>
+            <td class="rt-match"><span class="rt-match-perfect">★ 完美</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">📘 Agent Loop</a>
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch09" target="_blank">📘 Multi-Agent</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/agents" target="_blank">📖 Agents专区</a>
+              <a class="rt-link-lc" href="https://docs.langchain.com/oss/python/langchain/agents" target="_blank">🦜 LangChain Agents</a>
+              <a class="rt-link-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/" target="_blank">⚡ Hermes Agent</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">Agent Harness 与智能体运行时</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dsh" href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">🧩 DeepSeek Harness</a>
+              <a class="rt-link-dsh" href="deepseek-harness/docs/architecture.zh.md" target="_blank">🧩 架构说明</a>
+              <a class="rt-link-dsh" href="deepseek-harness/docs/cookbook/extension-cookbook.zh.md" target="_blank">🧩 扩展手册</a>
+              <a class="rt-link-dsh" href="https://github.com/cordiverse/paper" target="_blank">🧩 Cordis 论文</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">多模态能力应用</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/guides/4o-image-generation" target="_blank">📖 4o图像生成</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">模型微调与定制</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/applications/finetuning-gpt4o" target="_blank">📖 微调指南</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-2">L2 技能</span></td>
+            <td class="rt-name">AI 编程辅助与低代码</td>
+            <td class="rt-match"><span class="rt-match-perfect">★ 完美</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">📘 全书</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/applications/coding" target="_blank">📖 Coding</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/applications/function_calling" target="_blank">📖 Function Calling</a>
+            </div></td>
+          </tr>
+          <!-- Layer 3 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-3">L3 产品</span></td>
+            <td class="rt-name">AI 产品设计方法论</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">📘 设计模式</a>
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">📘 工程哲学</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-3">L3 产品</span></td>
+            <td class="rt-name">AI 产品评估与测试</td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch12" target="_blank">📘 测试策略</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/risks/adversarial" target="_blank">📖 对抗性测试</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-3">L3 产品</span></td>
+            <td class="rt-name">AI 合规与伦理</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/risks/factuality" target="_blank">📖 真实性</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/risks/biases" target="_blank">📖 偏见</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-3">L3 产品</span></td>
+            <td class="rt-name">原型与 Demo 快速构建</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">📘 AI编程实践</a>
+            </div></td>
+          </tr>
+          <!-- Layer 4 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-4">L4 业务</span></td>
+            <td class="rt-name">AI 客服与智能助手</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/techniques/rag" target="_blank">📖 RAG</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/agents" target="_blank">📖 Agents</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-4">L4 业务</span></td>
+            <td class="rt-name">AI 流程自动化</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">📘 Agent</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/agents/ai-workflows-vs-ai-agents" target="_blank">📖 Workflows vs Agents</a>
+              <a class="rt-link-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/features/cron" target="_blank">⚡ Hermes 自动化</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-4">L4 业务</span></td>
+            <td class="rt-name">AI 辅助研发效能</td>
+            <td class="rt-match"><span class="rt-match-perfect">★ 完美</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">📘 全书</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/applications/coding" target="_blank">📖 Coding</a>
+              <a class="rt-link-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/cli" target="_blank">⚡ Hermes 研发</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-4">L4 业务</span></td>
+            <td class="rt-name">AI 驱动的组织变革管理</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">🔜 推荐资源收集中</span>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-4">L4 业务</span></td>
+            <td class="rt-name">AI 实践落地与价值验证</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td><div class="rt-links">
+              <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">🔜 推荐资源收集中</span>
+            </div></td>
+          </tr>
+          <!-- Layer 5 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-5">L5 提效</span></td>
+            <td class="rt-name">AI 学习与知识获取</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/" target="_blank">📘 源码学习</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh" target="_blank">📖 系统学习</a>
+            </div></td>
+          </tr>
+          <!-- Layer 6 -->
+          <tr>
+            <td><span class="rt-layer rt-layer-6">L6 变现</span></td>
+            <td class="rt-name">AI 工具开发（低代码）</td>
+            <td class="rt-match"><span class="rt-match-perfect">★ 完美</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch02" target="_blank">📘 工具架构</a>
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch07" target="_blank">📘 MCP协议</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/agents/function-calling" target="_blank">📖 Function Calling</a>
+              <a class="rt-link-lc" href="https://docs.langchain.com/oss/python/langchain/agents" target="_blank">🦜 LangChain Agent</a>
+              <a class="rt-link-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/features/skills" target="_blank">⚡ Hermes 技能</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-6">L6 变现</span></td>
+            <td class="rt-name">AI 数据标注与微调服务</td>
+            <td class="rt-match"><span class="rt-match-partial" style="color:#4a4a4a;">—</span></td>
+            <td class="rt-match"><span class="rt-match-partial">◐ 部分</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/zh/applications/finetuning-gpt4o" target="_blank">📖 微调指南</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td><span class="rt-layer rt-layer-6">L6 变现</span></td>
+            <td class="rt-name">AI 自动化服务 (SaaS+Agent)</td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td class="rt-match"><span class="rt-match-good">● 匹配</span></td>
+            <td><div class="rt-links">
+              <a class="rt-link-dc" href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank">📘 Agent</a>
+              <a class="rt-link-pg" href="https://www.promptingguide.ai/agents/deep-agents" target="_blank">📖 Deep Agents</a>
+              <a class="rt-link-hm" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/messaging/" target="_blank">⚡ Hermes 网关</a>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:24px;text-align:center;">
+      <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.15);padding:8px 18px;border-radius:8px;">
+          🦜 <strong style="color:#22c55e;">LangChain</strong>
+          <span style="color:rgba(255,255,255,0.4);">— 作为补充资源已加入上表中的 Agent / RAG / 工具开发 条目</span>
+          <a href="https://python.langchain.com/" target="_blank" style="color:#22c55e;text-decoration:none;font-weight:600;">访问官网 →</a>
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.15);padding:8px 18px;border-radius:8px;margin-left:8px;">
+          ⚡ <strong style="color:#a855f7;">Hermes Agent</strong>
+          <span style="color:rgba(255,255,255,0.4);">— 加入 Agent / 流程自动化 / 工具开发 / 自动化服务 条目</span>
+          <a href="https://hermes-agent.nousresearch.com/docs/zh-Hans/" target="_blank" style="color:#a855f7;text-decoration:none;font-weight:600;">访问官网 →</a>
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.15);padding:8px 18px;border-radius:8px;margin:8px 0 0 8px;">
+          🧩 <strong style="color:#fb7185;">DeepSeek Harness</strong>
+          <span style="color:rgba(255,255,255,0.4);">— Agent Harness / 运行时 / 插件扩展专项资源</span>
+          <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" style="color:#fb7185;text-decoration:none;font-weight:600;">访问项目 →</a>
+        </span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <h2>准备好开始了吗？</h2>
+  <p>AI 时代的产品经理，必备的能力体系尽在此地图。持续迭代，保持学习。</p>
+  <a href="#foundation" class="btn-cta">
+    <span>🚀</span> 立即开始探索
+  </a>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="links">
+    <a href="#foundation">认知地基</a>
+    <a href="#skills">核心技能</a>
+    <a href="#product">产品应用</a>
+    <a href="#business">业务赋能</a>
+    <a href="#efficiency">个人提效</a>
+    <a href="#income">副业变现</a>
+    <a href="#resources">📚 学习资源</a>
+  </div>
+  <p>AI 能力地图 2026 — 基于当前 AI 技术与产品应用趋势编制 · 用 AI 赋能产品思维，而非被 AI 替代</p>
+  <p style="margin-top:8px;font-size:0.75rem;color:rgba(255,255,255,0.25);">
+    推荐资源：<a href="https://deep-dive-claude-code.vercel.app/" target="_blank" style="color:rgba(250,204,21,0.5);">📘 Deep Dive Claude Code</a> ·
+    <a href="https://www.promptingguide.ai/zh" target="_blank" style="color:rgba(56,189,248,0.5);">📖 提示工程指南</a> ·
+    <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" style="color:rgba(251,113,133,0.55);">🧩 DeepSeek Harness</a>
+  </p>
+</footer>
+
+<script>
+(function() {
+  const skillIds = [
+    'l1-history','l1-principles','l1-selection','l1-infra','l1-trends','l1-pm-role',
+    'l2-prompt','l2-rag','l2-agent','l2-multimodal','l2-finetune','l2-coding','l2-harness',
+    'l3-strategy','l3-design','l3-data-flywheel','l3-eval','l3-security','l3-compliance','l3-operations','l3-analytics','l3-prototype',
+    'l4-service','l4-marketing','l4-bi','l4-knowledge','l4-automation','l4-dev','l4-change','l4-value','l4-commercialization',
+    'l5-search','l5-writing','l5-meeting','l5-learning','l5-decision',
+    'l6-media','l6-tools','l6-consulting','l6-digital-human','l6-data-service','l6-saas-agent'
+  ];
+  document.querySelectorAll('.feature-card').forEach(function(card, index) {
+    if (card.querySelector('.learning-path-link')) return;
+    const id = skillIds[index];
+    if (!id) return;
+    const link = document.createElement('a');
+    link.className = 'learning-path-link';
+    link.href = 'ai-capability-learning-path.html?skill=' + id;
+    link.textContent = '[ 进入专项学习 ]';
+    const title = card.querySelector('h3');
+    if (title) link.setAttribute('aria-label', '进入' + title.textContent.trim() + '专项学习路径');
+    card.appendChild(link);
+  });
+})();
+</script>
+</body>
+</html>

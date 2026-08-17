@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分层能力测验 — AI 能力地图</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f5f5;--surface:#fff;--raised:#f0f0f0;--border:#e8e8e8;--border-visible:#ccc;--disabled:#999;--secondary:#666;--text:#1a1a1a;--display:#000;--accent:#d71921;--success:#4a9e5c;--warning:#d4a843;--interactive:#007aff;--layer:#4f46e5;}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}.nav-inner{max-width:840px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px}.nav-back,.nav-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase}.nav-back{color:var(--interactive);text-decoration:none;padding:6px 12px;border:1px solid rgba(0,122,255,.2);border-radius:6px}.nav-title{color:var(--secondary)}.main{max-width:760px;margin:auto;padding:40px 20px 80px}.page-header{margin-bottom:24px}.label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--disabled);margin-bottom:6px}.page-header h1{font-size:28px;line-height:1.25;color:var(--display);margin-bottom:7px}.page-header p{font-size:14px;color:var(--secondary)}
+.layer-tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:20px 0}.layer-tab{font-family:'Space Mono',monospace;font-size:10px;text-align:center;text-decoration:none;color:var(--secondary);padding:9px 4px;border:1px solid var(--border-visible);border-radius:5px;background:var(--surface);cursor:pointer}.layer-tab:hover{border-color:var(--layer);color:var(--layer)}.layer-tab.active{color:#fff;background:var(--layer);border-color:var(--layer)}.quiz{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}.quiz-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary);margin-bottom:4px}.quiz-desc{font-size:12px;color:var(--disabled);margin-bottom:16px}.scoreboard{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--raised);border:1px solid var(--border);border-radius:6px;margin-bottom:16px;font-family:'Space Mono',monospace;font-size:11px}.score-label{color:var(--secondary);letter-spacing:.04em}.score-value{font-weight:700}.score-status{padding:2px 8px;border-radius:4px;font-size:10px;letter-spacing:.04em;font-weight:500}.score-status.pass{background:rgba(74,158,92,.12);color:var(--success);border:1px solid rgba(74,158,92,.3)}.score-status.review{background:rgba(212,168,67,.12);color:var(--warning);border:1px solid rgba(212,168,67,.3)}.score-reset{margin-left:auto;background:none;border:0;font-family:'Space Mono',monospace;font-size:10px;color:var(--disabled);cursor:pointer;padding:4px 8px}.score-reset:hover{color:var(--accent)}
+.question{margin-bottom:14px;padding:12px 14px;border:1px solid var(--border);border-radius:6px;transition:.2s}.q-meta{font-family:'Space Mono',monospace;font-size:9px;color:var(--layer);letter-spacing:.05em;margin-bottom:3px}.q-text{font-size:13px;font-weight:500;margin-bottom:8px;line-height:1.5}.options{display:flex;flex-direction:column;gap:5px}.option{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:.15s;font-size:13px}.option:hover{background:var(--raised);border-color:var(--border-visible)}.radio{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border-visible);flex:none;display:flex;align-items:center;justify-content:center}.option.selected{border-color:var(--interactive);background:rgba(0,122,255,.06)}.option.selected .radio{border-color:var(--interactive)}.option.selected .radio:after{content:'';width:7px;height:7px;border-radius:50%;background:var(--interactive)}.feedback{display:none;margin-top:8px;padding:8px 10px;border-radius:4px;font-size:12px}.feedback.show{display:block}.feedback.correct{background:rgba(74,158,92,.08);color:var(--success);border:1px solid rgba(74,158,92,.2)}.feedback.wrong{background:rgba(215,25,33,.06);color:var(--accent);border:1px solid rgba(215,25,33,.2)}.summary{display:block;margin-top:4px;font-size:11px;line-height:1.45;color:var(--secondary)}.question.correct{border-color:var(--success);background:rgba(74,158,92,.04)}.question.wrong{border-color:var(--accent);background:rgba(215,25,33,.04)}.option.correct-answer{border-color:var(--success);background:rgba(74,158,92,.08)}.option.wrong-answer{border-color:var(--accent);background:rgba(215,25,33,.06)}.option.correct-answer .radio{border-color:var(--success)}.option.correct-answer .radio:after{background:var(--success)}.option.wrong-answer .radio{border-color:var(--accent)}.option.wrong-answer .radio:after{background:var(--accent)}
+.practice{margin-top:20px}.task{padding:12px 14px;border:1px dashed var(--border-visible);border-radius:6px;margin:10px 0}.task-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--secondary);margin-bottom:4px}.task-desc{font-size:13px}.sources{margin-top:20px;padding:15px;background:var(--raised);border-radius:6px;font-size:11px;color:var(--secondary)}.sources a{color:var(--interactive);text-decoration:none}.footer{text-align:center;padding:40px 20px;font-family:'Space Mono',monospace;font-size:10px;color:var(--disabled)}
+@media(max-width:640px){.main{padding:28px 14px 60px}.layer-tabs{grid-template-columns:repeat(3,1fr)}.quiz{padding:14px}.scoreboard{gap:7px}.score-status{display:none}.page-header h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-inner"><a class="nav-back" href="ai-capability-map.html">← BACK TO MAP</a><span class="nav-title">AI 能力地图</span></div></div>
+<main class="main">
+  <header class="page-header"><div class="label" id="label"></div><h1 id="title"></h1><p id="description"></p></header>
+  <nav class="layer-tabs" id="tabs" aria-label="能力层级测验"></nav>
+  <section class="quiz">
+    <div class="quiz-title">[ 能力检验 ]</div><div class="quiz-desc">每题作答后立即显示结果与解析；答题记录仅保存在当前浏览器</div>
+    <div class="scoreboard"><span class="score-label">SCORE</span><span class="score-value" id="score">0/8</span><span class="score-status" id="status">PENDING</span><button class="score-reset" id="reset">[ RESET ]</button></div>
+    <div id="questions"></div>
+    <div class="practice"><div class="quiz-title">[ 动手实践 ]</div><div id="tasks"></div></div>
+    <div class="sources" id="sources"></div>
+  </section>
+</main>
+<div class="footer">AI 能力地图 · 题库校准至 2026-08-17</div>
+<script>
+const O=(a,b,c,d)=>[a,b,c,d];
+const bank={
+l1:{title:'L1 · 认知地基',label:'L1 认知地基 · 分层测验',color:'#4f46e5',desc:'检验你对大模型原理、模型选型、成本与趋势判断的理解。',questions:[
+['核心原理','Transformer 的注意力机制主要解决什么问题？',O('让每个 Token 只关注相邻 Token','按相关性聚合序列中不同位置的信息','把模型参数全部存入上下文','自动验证输出事实'),'B','注意力让模型按相关性组合序列信息；它不是事实校验器，也不等同于长期记忆。'],
+['训练与推理','“预训练”和“推理”的正确区别是？',O('预训练更新模型参数，推理使用既有参数生成结果','二者都会实时更新参数','推理只发生在本地设备','预训练不需要数据'),'A','预训练通过数据与优化过程更新权重；常规推理使用已训练权重，不会因一次对话自动学会新知识。'],
+['上下文','关于上下文窗口，哪项说法最准确？',O('窗口越大，答案必然越正确','它等同于跨会话长期记忆','它限制一次推理可利用的信息量，但不保证模型有效使用全部内容','只计算用户输入，不计算输出'),'C','更长上下文扩大可见信息范围，却仍受检索位置、噪声、注意力分配和成本影响。'],
+['模型架构','MoE（混合专家）模型常见的效率来源是什么？',O('每个 Token 都激活全部专家','按路由为每个 Token 激活部分专家','取消注意力层','完全不需要显存'),'B','MoE 通常以稀疏路由激活部分专家，在扩大总参数容量的同时控制单次计算量。'],
+['推理优化','量化通常带来的主要取舍是？',O('降低显存和推理成本，但可能损失部分质量','增加参数量且无质量变化','只缩短上下文窗口','自动消除幻觉'),'A','低比特量化可降低显存、带宽和成本，但需用目标任务评估质量与兼容性。'],
+['模型选型','为客服摘要场景选择模型，最可靠的第一步是？',O('直接选参数最大的模型','只看公开排行榜第一名','用真实样本定义质量、延迟、成本与合规门槛后实测','只比较每百万 Token 单价'),'C','模型选型应基于代表性业务评测集和端到端约束，不能只看参数、榜单或牌价。'],
+['趋势判断','判断一项 AI 技术能否进入生产，最强的证据组合是？',O('社交媒体热度 + 发布会 Demo','真实任务评测 + 可重复试点 + 风险和成本数据','融资规模 + 明星创始人','模型名称中的版本号'),'B','生产成熟度需要可重复证据，包括目标任务效果、稳定性、成本、运维和风险。'],
+['PM 价值','AI 时代产品经理最难被自动化替代的工作是？',O('生成会议摘要','把固定格式改写成周报','在不确定条件下平衡用户价值、商业目标与风险并承担决策责任','批量翻译文案'),'C','AI 擅长生成与整理，PM 的关键价值仍在目标定义、取舍、共情、协同和责任判断。']],
+tasks:['选一个真实功能，用同一批 20 条样本对比两款模型的质量、P95 延迟、单次成本与失败模式。','画出“训练数据 → 预训练/后训练 → 模型权重 → 推理 → 产品反馈”的闭环，标出哪些环节会更新参数。'],
+sources:[['NIST AI RMF','https://www.nist.gov/itl/ai-risk-management-framework'],['Transformer 论文','https://arxiv.org/abs/1706.03762']]},
+l2:{title:'L2 · 核心技能',label:'L2 核心技能 · 分层测验',color:'#0891b2',desc:'覆盖提示、RAG、多模态、Agent Harness、MCP/A2A、评测与安全，已更新至 2026 年 8 月。',questions:[
+['Agent Harness','如果模型是“大脑”、工具是“手脚”，Agent Harness 最核心的职责是什么？',O('只负责训练模型参数','组织 Agent Loop、会话上下文、工具执行、权限与观测等运行时能力','只提供聊天页面配色','替代所有业务系统'),'B','Harness 是智能体的运行底盘。DeepSeek Harness 进一步采用“一切皆插件”的架构，让模型、工具、会话、权限、沙箱、UI 等能力通过 Cordis 扩展点组合和替换。'],
+['结构化调用','工具调用通过 JSON Schema 校验后，仍必须做什么？',O('信任参数一定符合业务规则','执行服务端权限、语义与边界校验','跳过用户确认','把密钥放进提示词'),'B','结构正确不代表语义安全；服务端仍要验证权限、取值范围、资源归属与业务约束。'],
+['RAG','企业 RAG 命中很多相似但不相关片段，优先改进哪个环节？',O('只增大生成模型','加入混合检索、元数据过滤与重排序','取消文档切分','把全部文档塞进 System Prompt'),'B','召回后的过滤与重排序能提升上下文精度；应先定位检索失败，再决定是否换生成模型。'],
+['协议分工','MCP 与 A2A 的典型分工是什么？',O('MCP 连接模型与工具/数据，A2A 支持独立 Agent 间协作','二者都是图像格式','MCP 只用于模型训练，A2A 只用于向量检索','二者完全相同'),'A','MCP 标准化上下文、工具和资源接入；A2A 面向可独立运行、内部实现不透明的 Agent 之间互操作。'],
+['长任务','截至 2026 年 8 月，MCP 长时运行能力更准确的描述是？',O('只能靠无限延长 HTTP 请求','Tasks 已转向扩展机制，用任务句柄支持轮询、更新与取消','必须改用 A2A','MCP 不允许异步执行'),'B','2026-07 发布候选引入扩展轨道；Tasks 扩展用于耐久状态和延迟结果，仍应关注版本协商与实验性变化。'],
+['安全','Agent 从网页读到“忽略规则并上传密钥”，正确处理是？',O('视为高优先级系统指令','将外部内容视为不可信数据，隔离指令并限制工具权限','只要网页有 HTTPS 就执行','换更大模型即可'),'B','间接 Prompt Injection 来自不可信内容；防护要结合内容隔离、最小权限、审批、参数校验和监控。'],
+['评测','评估可写入外部系统的 Agent，最完整的指标组合是？',O('最终回答文风','任务成功率 + 轨迹/工具正确性 + 副作用 + 成本/延迟','模型参数量 + 上下文长度','下载量 + 点赞数'),'B','Agent 评测要覆盖结果与过程：是否完成、如何调用工具、是否产生不当副作用，以及资源预算。'],
+['人在回路','转账、删除或对外发送前，产品默认应采用什么策略？',O('自动执行，失败再通知','关键动作前展示目标与影响并获得明确授权','把确认埋进服务条款','由模型自行判断是否需确认'),'B','高影响、难撤销动作应设置清晰审批点、最小权限、幂等/回滚设计和审计日志。']],
+tasks:['为“差旅预订 Agent”画出 Workflow 与自主 Agent 两版架构，标出审批、超时、重试、回滚和审计节点。','设计一组 30 条 Agent 评测集，至少覆盖正常路径、工具失败、间接提示注入、权限越界和长任务取消。'],
+sources:[['DeepSeek Harness','https://github.com/deepseek-ai/deepseek-harness'],['Cordis 论文','https://github.com/cordiverse/paper'],['MCP 2026-07 发布候选','https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/'],['A2A v1.0.1','https://github.com/a2aproject/A2A/releases'],['Anthropic Agent 评测','https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents']]},
+l3:{title:'L3 · 产品应用能力',label:'L3 产品应用 · 分层测验',color:'#d97706',desc:'检验场景战略、产品设计、数据飞轮、评估、安全合规、上线运营与指标分析能力。',questions:[
+['场景战略','面对流程稳定、规则清晰且要求结果完全一致的任务，PM 首先应考虑什么方案？',O('直接使用自主 Agent','优先评估规则或确定性 Workflow，再判断是否需要模型','训练最大参数模型','先做对话界面再找需求'),'B','AI 不是默认答案。先从用户任务、价值、确定性要求和异常复杂度判断规则、Workflow、生成式能力或 Agent。'],
+['概率性产品','面向概率性输出，最合理的交互与原型设计是？',O('把所有输出伪装成确定事实','覆盖引用、低置信、修正、重试、撤销和人工接管，并用真实任务验证','隐藏失败状态','只验证页面视觉'),'B','AI 产品需要让不确定性可核验、可修正、可恢复；原型应验证任务价值和关键风险。'],
+['数据飞轮','把生产反馈转化为可靠改进资产，正确闭环是？',O('收集所有对话后直接自动训练','对失败 Trace 抽样、脱敏和标注，形成评测集，再验证提示、检索、工具或模型改动','只统计点赞数','每次改版都删除旧样本'),'B','生产纠错要经过权利与隐私控制、分类标注和稳定回归评测，才能形成可审计的数据飞轮。'],
+['评估测试','使用 LLM 评分器评估真实任务时，正确做法是？',O('完全替代领域专家','定义 rubric，用人工金标校准并持续抽检偏差，同时覆盖边界与高代价失败','让被测模型自己定义标准','每次发布更换评分口径'),'B','自动评分可扩展，但必须与真实任务分布、稳定标准和人工判断对齐，并监控评分器漂移。'],
+['安全权限','可读取客户资料并发送邮件的 Agent，默认权限设计应是什么？',O('共享管理员账号以减少失败','独立身份、最小权限、资源与动作级授权，外发前审批并保留审计','只依赖提示词禁止越权','成功后删除工具日志'),'B','Agent 的身份、授权和工具边界必须可验证；高影响动作还需要人在回路、可逆性和完整审计。'],
+['合规透明','截至 2026-08，欧盟 AI Act 的透明度义务强调什么？',O('所有 AI 输出必须公开模型权重','让用户知晓与 AI 交互，并对特定生成或操纵内容进行标记或披露','禁止所有生成式 AI','只适用于欧盟注册公司'),'B','相关透明度规则覆盖 AI 交互告知以及特定生成或操纵内容的标记、披露责任，PM 需转成产品控制与证据。'],
+['上线运营','AI 功能通过离线评测后，生产阶段还应持续监控什么？',O('只监控 API 是否返回 200','功能质量、运行状态、人因、安全、合规和更广泛影响，并准备告警、降级与回滚','只监控模型排行榜','等用户投诉后再记录版本'),'B','离线评测不能覆盖真实分布与系统变化；生产监控必须连接质量、运行、人员、安全、合规和影响信号。'],
+['产品指标','哪个指标组合最能支持 AI 产品迭代决策？',O('调用次数与生成字数','任务成功率、纠错/接管率、质量分层、延迟、单位成本及业务结果','模型参数量与网页访问量','只看用户点赞'),'B','有效指标树要把模型与系统质量、用户行为、成本和业务结果连成因果链，并按任务与版本分群。']],
+tasks:['为一个候选场景完成“规则 / Workflow / AI / Agent”选择，并写出价值、数据、风险与停止条件。','制作上线评分卡和监控方案：评测集、阈值、权限、灰度、六类生产信号、告警、降级与回滚。'],
+sources:[['OpenAI · Agent 实践指南','https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/'],['NIST · Agent 身份与授权','https://www.nist.gov/news-events/news/2026/02/new-concept-paper-identity-and-authority-software-agents'],['NIST · AI 生产监控','https://www.nist.gov/news-events/news/2026/03/new-report-challenges-monitoring-deployed-ai-systems'],['欧盟 AI Act 透明度指南','https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems']]},
+l4:{title:'L4 · 业务赋能能力',label:'L4 业务赋能 · 分层测验',color:'#059669',desc:'检验场景判断、流程改造、ROI、知识管理、自动化与组织落地。',questions:[
+['场景选择','最适合优先做 AI 试点的业务场景通常具备什么特征？',O('频次高、基线清楚、数据可得、风险可控','完全无流程且责任不明','一年只发生一次','价值无法衡量'),'A','高频、可测、数据可用且风险可控的场景更容易形成快速反馈和可信 ROI。'],
+['客服','AI 客服的正确升级机制是？',O('永不转人工','按意图、置信度、用户情绪与风险触发人工接管，并携带上下文','每轮都转人工','只在用户投诉后保存记录'),'B','升级策略应结合任务风险和质量信号，同时无缝传递上下文，避免用户重复描述。'],
+['知识管理','企业知识问答持续答错旧政策，根因最可能在哪？',O('网页颜色','知识源治理、版本、权限或索引更新链路','用户名字太短','模型温度不够高'),'B','企业 RAG 的核心不仅是检索算法，还包括内容所有权、版本、权限、更新与删除传播。'],
+['流程自动化','AI + RPA 方案中，AI 更适合负责什么？',O('所有确定性点击动作','非结构化理解与判断，确定性步骤由规则/RPA 执行','绕过业务权限','删除审计日志'),'B','把概率性判断与确定性执行拆开，能提高可控性、可测试性与故障定位能力。'],
+['ROI','计算 AI 项目 ROI 时，哪项必须计入总成本？',O('只有 API Token','集成、人工复核、监控、失败损失、变更管理与推理成本','只有研发工资','只有服务器采购'),'B','端到端 TCO 包含建设、运行、治理和失败成本，忽略人工复核与变更管理会高估 ROI。'],
+['价值验证','PoC 准确率很高但业务 KPI 没改善，下一步应做什么？',O('扩大宣传','检查流程采用率、瓶颈迁移与指标因果链','立刻换模型','删除基线数据'),'B','模型指标只是中间指标；要验证员工是否采用、瓶颈是否移动、业务结果是否由该功能带来。'],
+['组织变革','推动团队采用 AI 的有效机制是？',O('只买账号','明确场景负责人、培训、反馈渠道、使用规范和可见的成功案例','强制所有任务使用 AI','隐藏失败案例'),'B','采用率来自能力、动机、流程和治理共同作用，需要场景 owner 与持续反馈。'],
+['商业化','设计 AI 产品套餐与定价时，最完整的依据是？',O('竞争对手价格除以二','客户价值与支付意愿、用量边界、推理/工具/人工/支持成本以及目标毛利','模型参数量','生成的 Token 越多价格越高'),'B','商业化要同时验证价值捕获和单位经济，并让套餐边界、用量、服务等级与客户成功路径相互匹配。']],
+tasks:['选择一个部门流程，画出现状与 AI 后流程，并量化节省时长、返工率、风险成本和采用率。','为一个 AI 产品制作三档套餐与单位经济表，并规划从试用、激活到续费扩张的 90 天路径。'],sources:[['OpenAI 企业评测框架','https://openai.com/index/evals-drive-next-chapter-of-ai/'],['OpenAI · 工作流机会优先级','https://academy.openai.com/public/clubs/champions-ecqup/resources/workflow-discovery-and-prioritization-matrix-2026-05-05'],['NIST AI RMF','https://www.nist.gov/itl/ai-risk-management-framework']]},
+l5:{title:'L5 · 个人提效能力',label:'L5 个人提效 · 分层测验',color:'#db2777',desc:'检验搜索核验、文档协作、会议管理、学习与决策辅助。',questions:[
+['AI 搜索','用 AI 做行业调研时，最可靠的流程是？',O('只读生成摘要','先定义问题，追溯一手来源，交叉核验并记录日期与不确定性','只看引用数量','把最新等同于最可靠'),'B','AI 可加速搜集和综合，但关键事实仍需回到一手来源并记录时效。'],
+['事实核验','AI 给出一项可能变化的价格或法规时，应怎么做？',O('凭语气判断','查看权威原文、发布日期与适用范围','让同一模型再说一次','删掉日期'),'B','时效性事实必须用当前权威来源校验，重复生成并不构成独立证据。'],
+['文档写作','用 AI 写 PRD 的最佳分工是？',O('AI 决定目标和优先级','人定义目标与取舍，AI 辅助结构化、反例检查和表达','AI 直接发布','只让 AI 改字体'),'B','责任判断留在人，AI 适合发散、整理、审阅与改写。'],
+['会议管理','AI 会议纪要进入任务系统前，最重要的检查是？',O('表情符号数量','决策、负责人、截止时间和原话是否准确，并由参会者确认','摘要越长越好','是否用了最贵模型'),'B','行动项错误会直接影响协作，应让责任人确认而不是把自动摘要当事实记录。'],
+['隐私','处理含客户隐私的材料时，正确做法是？',O('上传到任意免费工具','按组织政策选择获批工具，最小化/脱敏数据并检查保留设置','删除文件名即可','只在提示词中写“保密”'),'B','“提示保密”不是控制措施；工具审批、最小化、脱敏、权限和保留策略才是。'],
+['学习','用 AI 学新概念，哪种方式更能检验真实掌握？',O('让 AI 反复总结','先自己解释和做题，再让 AI 追问、纠错并迁移到新案例','收藏更多链接','只读最短答案'),'B','主动回忆、生成解释、反馈和迁移练习比被动阅读更能暴露理解缺口。'],
+['决策','AI 给出商业建议后，人应该重点补充什么？',O('更有自信的语气','目标权重、约束、利益相关者、不可量化因素与责任判断','更多形容词','隐藏反对证据'),'B','AI 可生成选项与分析，但决策需要显式价值权重、组织语境和责任承担。'],
+['效率衡量','判断 AI 是否真的提效，应该比较什么？',O('生成字数','同等质量下的端到端完成时间、返工率与认知负担','使用次数','提示词长度'),'B','局部生成更快可能带来更多核验与返工，必须看端到端质量调整后的效率。']],
+tasks:['挑一份本周交付物，记录不用 AI 与使用 AI 的总时长、核验时长、返工次数和质量评分。','做一次带出处的竞品调研：至少 5 个一手来源，逐条标注发布日期、主张和证据强度。'],sources:[['NIST GenAI Profile','https://www.nist.gov/itl/ai-risk-management-framework'],['OpenAI 评测框架','https://openai.com/index/evals-drive-next-chapter-of-ai/']]},
+l6:{title:'L6 · 副业变现能力',label:'L6 副业变现 · 分层测验',color:'#ea580c',desc:'检验需求验证、定价、交付、数据权益、单位经济与可持续增长。',questions:[
+['需求验证','做 AI 副业产品前，最有价值的早期证据是？',O('朋友说很酷','目标客户愿意为一个具体痛点试用、预付或投入迁移成本','生成了漂亮 Logo','模型排行榜上升'),'B','真实行为比口头兴趣更强，预付、试点承诺或持续投入能验证痛点与付费意愿。'],
+['定位','AI 服务最可持续的卖点通常是？',O('使用了某个热门模型','为明确人群交付可量化结果与可靠服务','提示词数量最多','完全无人负责'),'B','模型会快速同质化，场景理解、交付结果、数据/流程积累和信任更能形成差异化。'],
+['定价','调用成本波动明显的 SaaS，合理定价方式是？',O('永久免费且不限量','价值分层 + 用量边界，并监控毛利与异常消耗','只按代码行收费','永不调整套餐'),'B','定价要同时反映客户价值和单位经济，设置用量、限额与超额规则控制尾部风险。'],
+['数据权益','客户提供材料用于生成内容时，合同至少应明确什么？',O('只写模型名称','数据使用目的、权限、保留/删除、输出权利与第三方条款','网页主题色','提示词长度'),'B','输入、训练/改进用途、输出与第三方服务条款都可能影响权利和责任边界。'],
+['内容变现','批量生成自媒体内容的最大长期风险是？',O('产量不够高','低差异化、事实/版权风险与平台信任下降','标题不够长','没有使用多 Agent'),'B','低成本生成不等于长期价值；编辑判断、原创证据、版权与受众信任决定可持续性。'],
+['服务交付','AI 咨询项目应该如何定义验收？',O('交付提示词文件即可','以业务结果、样本评测、边界、培训和运维责任形成可验证标准','客户说“感觉不错”','只保证模型永不出错'),'B','可验收交付需要目标、样本、阈值、例外处理和双方责任，不能只交付工具。'],
+['自动化服务','Agent 自动化服务上线前，最关键的商业技术指标是？',O('总注册数','每个成功任务的收入、全成本与错误赔付/人工兜底','模型参数量','页面访问时长'),'B','按成功任务核算收入与完整成本，才能看清毛利和失败尾部风险。'],
+['规模化','从定制项目走向产品化，优先标准化什么？',O('所有客户的品牌色','重复出现的工作流、输入规范、评测、异常处理和交付边界','销售话术中的形容词','创始人个人时间'),'B','把重复交付模块化并明确例外边界，才能降低边际成本且维持质量。']],
+tasks:['为一个 AI 副业写单位经济表：客单价、获客、推理、人工复核、工具、退款/赔付与毛利。','访谈 5 位目标用户，用“现有替代方案、发生频次、损失、预算、决策人”验证需求，禁止只问“你想不想要”。'],sources:[['NIST GenAI Profile','https://www.nist.gov/itl/ai-risk-management-framework'],['欧盟 AI 透明度指南','https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems']]}
+};
+const label=document.getElementById('label'),title=document.getElementById('title'),description=document.getElementById('description'),tabs=document.getElementById('tabs'),questions=document.getElementById('questions'),tasks=document.getElementById('tasks'),sources=document.getElementById('sources'),score=document.getElementById('score'),status=document.getElementById('status'),reset=document.getElementById('reset');
+const letters=['A','B','C','D'];let layer=new URLSearchParams(location.search).get('layer');if(!bank[layer])layer='l1';let saved={};const key='ai-capability-quiz-'+layer;try{saved=JSON.parse(localStorage.getItem(key))||{}}catch(e){}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){const d=bank[layer];document.documentElement.style.setProperty('--layer',d.color);document.title=d.title+' — AI 能力地图';label.textContent=d.label;title.textContent=d.title;description.textContent=d.desc;tabs.innerHTML=Object.entries(bank).map(([id,x])=>`<a class="layer-tab ${id===layer?'active':''}" href="?layer=${id}">${id.toUpperCase()} ${x.title.split('·')[1].trim()}</a>`).join('');questions.innerHTML=d.questions.map((q,i)=>`<div class="question" data-id="${i}"><div class="q-meta">${esc(q[0])} · ${i+1}/8</div><div class="q-text">Q${i+1}. ${esc(q[1])}</div><div class="options">${q[2].map((x,j)=>`<div class="option" data-v="${letters[j]}"><span class="radio"></span>${letters[j]}) ${esc(x)}</div>`).join('')}</div><div class="feedback"></div></div>`).join('');tasks.innerHTML=d.tasks.map((x,i)=>`<div class="task"><div class="task-title">T${i+1}. 实践任务</div><div class="task-desc">${esc(x)}</div></div>`).join('');sources.innerHTML='<strong>校准来源（截至 2026-08-17）：</strong> '+d.sources.map(x=>`<a href="${x[1]}" target="_blank" rel="noopener">${esc(x[0])}</a>`).join(' · ');bind();scoreNow()}
+function show(q,selected,restore=false){const idx=+q.dataset.id,answer=bank[layer].questions[idx][3],summary=bank[layer].questions[idx][4],ok=selected===answer;q.classList.add(ok?'correct':'wrong');q.querySelectorAll('.option').forEach(o=>{if(o.dataset.v===selected)o.classList.add('selected');if(o.dataset.v===answer)o.classList.add('correct-answer');if(o.dataset.v===selected&&!ok)o.classList.add('wrong-answer')});const f=q.querySelector('.feedback');f.className='feedback show '+(ok?'correct':'wrong');f.innerHTML=`<strong>${ok?'CORRECT':'WRONG · 正确答案是 '+answer}</strong><span class="summary">${esc(summary)}</span>`;if(!restore){saved[idx]={selected,ok};localStorage.setItem(key,JSON.stringify(saved));scoreNow()}}
+function bind(){document.querySelectorAll('.question').forEach(q=>{const v=saved[q.dataset.id];if(v){show(q,v.selected,true);return}q.querySelectorAll('.option').forEach(o=>o.addEventListener('click',()=>{if(saved[q.dataset.id])return;show(q,o.dataset.v)}))})}
+function scoreNow(){const vals=Object.values(saved),correct=vals.filter(x=>x.ok).length,total=bank[layer].questions.length;score.textContent=correct+'/'+total;status.className='score-status '+(vals.length===0?'':correct>=6?'pass':'review');status.textContent=vals.length===0?'PENDING':vals.length<total?'IN PROGRESS':correct===total?'PERFECT':correct>=6?'PASS':'REVIEW'}
+reset.addEventListener('click',()=>{saved={};localStorage.removeItem(key);render()});render();
+</script>
+</body>
+</html>

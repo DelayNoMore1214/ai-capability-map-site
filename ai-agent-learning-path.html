@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 学习路径 — AI 能力地图</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lp-bg: #F5F5F5;
+  --lp-surface: #FFFFFF;
+  --lp-surface-raised: #F0F0F0;
+  --lp-border: #E8E8E8;
+  --lp-border-visible: #CCCCCC;
+  --lp-text-disabled: #999999;
+  --lp-text-secondary: #666666;
+  --lp-text-primary: #1A1A1A;
+  --lp-text-display: #000000;
+  --lp-accent: #D71921;
+  --lp-accent-subtle: rgba(215,25,33,0.12);
+  --lp-success: #4A9E5C;
+  --lp-warning: #D4A843;
+  --lp-interactive: #007AFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--lp-bg);
+  color: var(--lp-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Nav */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--lp-border);
+}
+.nav-inner {
+  max-width: 800px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 52px;
+}
+.nav-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lp-interactive);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid rgba(0,122,255,0.2);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.nav-back:hover {
+  background: rgba(0,122,255,0.06);
+  border-color: var(--lp-interactive);
+}
+.nav-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lp-text-secondary);
+}
+
+/* Main */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* Header */
+.page-header {
+  margin-bottom: 32px;
+}
+.page-header .label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lp-text-disabled);
+  margin-bottom: 6px;
+}
+.page-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--lp-text-display);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.page-header p {
+  font-size: 14px;
+  color: var(--lp-text-secondary);
+  line-height: 1.6;
+}
+
+/* Layer section */
+.lp-layer {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.lp-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.lp-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.lp-badge-l1 { color: #4f46e5; border-color: rgba(79,70,229,0.3); background: rgba(79,70,229,0.06); }
+.lp-badge-l2 { color: #0891b2; border-color: rgba(8,145,178,0.3); background: rgba(8,145,178,0.06); }
+.lp-badge-l3 { color: #d97706; border-color: rgba(217,119,6,0.3); background: rgba(217,119,6,0.06); }
+.lp-layer-progress {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--lp-text-disabled);
+  letter-spacing: 0.04em;
+}
+
+/* Segmented progress */
+.lp-progress-bar {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+.lp-progress-seg {
+  height: 6px;
+  flex: 1;
+  border-radius: 0;
+  background: var(--lp-border);
+  transition: background 0.3s ease;
+}
+.lp-progress-seg.filled { background: var(--lp-text-primary); }
+
+/* Total progress bar */
+.total-progress-wrap {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.total-progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.total-progress-label .lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lp-text-secondary);
+}
+.total-progress-label .val {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--lp-text-primary);
+  font-weight: 500;
+}
+
+/* Sub items */
+.lp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-bottom: 2px;
+}
+.lp-item:hover { background: var(--lp-surface-raised); }
+.lp-item.checked .lp-item-title {
+  text-decoration: line-through;
+  color: var(--lp-text-disabled);
+}
+
+.lp-checkbox {
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  margin-top: 3px;
+  border: 1.5px solid var(--lp-border-visible);
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+.lp-item.checked .lp-checkbox {
+  border-color: var(--lp-success);
+  background: var(--lp-success);
+}
+.lp-item.checked .lp-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 1px; left: 4px;
+  width: 5px; height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.lp-item-text { flex: 1; min-width: 0; }
+.lp-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lp-text-primary);
+  line-height: 1.4;
+}
+.lp-item-desc {
+  font-size: 12px;
+  color: var(--lp-text-secondary);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.lp-item-links {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.lp-item-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--lp-interactive);
+  text-decoration: none;
+  padding: 2px 8px;
+  border: 1px solid rgba(0,122,255,0.2);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.lp-item-links a:hover {
+  background: rgba(0,122,255,0.08);
+  border-color: var(--lp-interactive);
+}
+
+/* Quiz section */
+.lp-quiz {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+.lp-quiz-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lp-text-secondary);
+  margin-bottom: 4px;
+}
+.lp-quiz-desc {
+  font-size: 12px;
+  color: var(--lp-text-disabled);
+  margin-bottom: 16px;
+}
+
+/* Scoreboard */
+.lp-scoreboard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--lp-surface-raised);
+  border: 1px solid var(--lp-border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+.lp-score-label { color: var(--lp-text-secondary); letter-spacing: 0.04em; }
+.lp-score-value { color: var(--lp-text-primary); font-weight: 700; }
+.lp-score-status {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.lp-score-status.pass {
+  background: rgba(74,158,92,0.12);
+  color: var(--lp-success);
+  border: 1px solid rgba(74,158,92,0.3);
+}
+.lp-score-status.review {
+  background: rgba(212,168,67,0.12);
+  color: var(--lp-warning);
+  border: 1px solid rgba(212,168,67,0.3);
+}
+.lp-score-reset {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--lp-text-disabled);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.lp-score-reset:hover { color: var(--lp-accent); }
+
+/* Questions */
+.lp-question {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--lp-border);
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+.lp-q-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--lp-text-primary);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.lp-q-options { display: flex; flex-direction: column; gap: 5px; }
+.lp-q-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--lp-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 13px;
+  color: var(--lp-text-primary);
+}
+.lp-q-option:hover {
+  background: var(--lp-surface-raised);
+  border-color: var(--lp-border-visible);
+}
+.lp-q-option.selected {
+  border-color: var(--lp-interactive);
+  background: rgba(0,122,255,0.06);
+}
+.lp-q-option .lp-q-radio {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lp-border-visible);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.lp-q-option.selected .lp-q-radio { border-color: var(--lp-interactive); }
+.lp-q-option.selected .lp-q-radio::after {
+  content: ''; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--lp-interactive);
+}
+
+.lp-q-feedback {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  display: none;
+}
+.lp-q-feedback.show { display: block; }
+.lp-q-feedback.correct {
+  background: rgba(74,158,92,0.08);
+  color: var(--lp-success);
+  border: 1px solid rgba(74,158,92,0.2);
+}
+.lp-q-feedback.wrong {
+  background: rgba(215,25,33,0.06);
+  color: var(--lp-accent);
+  border: 1px solid rgba(215,25,33,0.2);
+}
+.lp-q-result { display: block; }
+.lp-q-summary {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--lp-text-secondary);
+  opacity: 0.9;
+}
+
+.lp-question.answered { border-color: var(--lp-border-visible); }
+.lp-question.correct { border-color: var(--lp-success); background: rgba(74,158,92,0.04); }
+.lp-question.wrong { border-color: var(--lp-accent); background: rgba(215,25,33,0.04); }
+.lp-q-option.correct-answer { border-color: var(--lp-success); background: rgba(74,158,92,0.08); }
+.lp-q-option.wrong-answer { border-color: var(--lp-accent); background: rgba(215,25,33,0.06); }
+.lp-q-option.correct-answer .lp-q-radio { border-color: var(--lp-success); }
+.lp-q-option.correct-answer .lp-q-radio::after { background: var(--lp-success); }
+.lp-q-option.wrong-answer .lp-q-radio { border-color: var(--lp-accent); }
+.lp-q-option.wrong-answer .lp-q-radio::after { background: var(--lp-accent); }
+
+/* Hands-on tasks */
+.lp-task {
+  padding: 12px 14px;
+  border: 1px dashed var(--lp-border-visible);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.lp-task-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lp-text-secondary);
+  margin-bottom: 4px;
+}
+.lp-task-desc {
+  font-size: 13px;
+  color: var(--lp-text-primary);
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--lp-text-disabled);
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<div class="nav">
+  <div class="nav-inner">
+    <a class="nav-back" href="ai-capability-map.html">← BACK TO MAP</a>
+    <span class="nav-title">AI 能力地图</span>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="label">L2 核心技能 · 专项学习</div>
+    <h1>AI Agent / 智能体</h1>
+    <p>知识点校准至 2026-08-17。理解 Workflow 与 Agent 的边界、结构化 Tool Use、MCP / A2A、长任务、轨迹评测、Prompt Injection 防护与高风险动作审批。</p>
+  </div>
+
+  <!-- Total progress -->
+  <div class="total-progress-wrap">
+    <div class="total-progress-label">
+      <span class="lbl">总进度</span>
+      <span class="val" id="total-progress-text">0/11</span>
+    </div>
+    <div class="lp-progress-bar" id="total-progress">
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+    </div>
+  </div>
+
+  <!-- ===== L1 ===== -->
+  <div class="lp-layer">
+    <div class="lp-layer-header">
+      <span class="lp-badge lp-badge-l1">L1 概念认知</span>
+      <span class="lp-layer-progress" id="lp1-progress-text">0/4</span>
+    </div>
+    <div class="lp-progress-bar" id="lp1-progress">
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l1-1">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">Agent 范式与 ReAct 循环</div>
+        <div class="lp-item-desc">理解感知→思考→行动的循环机制，Agent vs 普通 LLM 聊天的 3 个本质区别</div>
+        <div class="lp-item-links">
+          <a href="https://deep-dive-claude-code.vercel.app/chapter/ch01" target="_blank" rel="noopener noreferrer">DDCC · Agent Loop</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l1-2">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">Tool Use / Function Calling</div>
+        <div class="lp-item-desc">理解核心流程：意图识别→选函数→填参数→执行→返回，产品设计中的工具注册与管理</div>
+        <div class="lp-item-links">
+          <a href="https://www.promptingguide.ai/agents/function-calling" target="_blank" rel="noopener noreferrer">PG · Function Calling</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l1-3">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">Memory 机制</div>
+        <div class="lp-item-desc">短期记忆（上下文窗口）/ 长期记忆（外部存储）/ 持久记忆（跨会话），各自适用场景与产品取舍</div>
+        <div class="lp-item-links">
+          <a href="https://www.promptingguide.ai/agents" target="_blank" rel="noopener noreferrer">PG · Agents</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l1-4">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">Planning 与任务分解</div>
+        <div class="lp-item-desc">CoT / ToT / ReAct 等策略的业务含义，Agent 如何将复杂任务拆解为子步骤</div>
+        <div class="lp-item-links">
+          <a href="https://deep-dive-claude-code.vercel.app/chapter/ch09" target="_blank" rel="noopener noreferrer">DDCC · Multi-Agent</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== L2 ===== -->
+  <div class="lp-layer">
+    <div class="lp-layer-header">
+      <span class="lp-badge lp-badge-l2">L2 框架认知</span>
+      <span class="lp-layer-progress" id="lp2-progress-text">0/4</span>
+    </div>
+    <div class="lp-progress-bar" id="lp2-progress">
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l2-1">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">MCP 协议</div>
+        <div class="lp-item-desc">Agent 的标准化工具协议，理解它如何打破生态壁垒、降低集成成本（PM 选型视角）</div>
+        <div class="lp-item-links">
+          <a href="https://deep-dive-claude-code.vercel.app/chapter/ch07" target="_blank" rel="noopener noreferrer">DDCC · MCP Protocol</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l2-2">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">LangChain Agent 框架体验</div>
+        <div class="lp-item-desc">打开 LangChain Playground，选择一个预置 Agent 模板，观察工具选择→参数填充→执行→返回的全过程</div>
+        <div class="lp-item-links">
+          <a href="https://docs.langchain.com/oss/python/langchain/agents" target="_blank" rel="noopener noreferrer">LangChain · Agents</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l2-3">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">主流 Agent 框架对比</div>
+        <div class="lp-item-desc">LangGraph vs AutoGen vs CrewAI，各自的架构哲学、适用场景、优劣势（做出对比表）</div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l2-4">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">子 Agent 编排模式</div>
+        <div class="lp-item-desc">Workflow（流水线）/ Orchestration（编排器）/ Debate（辩论），不同业务场景下如何选择</div>
+        <div class="lp-item-links">
+          <a href="https://deep-dive-claude-code.vercel.app/chapter/ch09" target="_blank" rel="noopener noreferrer">DDCC · Multi-Agent</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== L3 ===== -->
+  <div class="lp-layer">
+    <div class="lp-layer-header">
+      <span class="lp-badge lp-badge-l3">L3 业务应用</span>
+      <span class="lp-layer-progress" id="lp3-progress-text">0/3</span>
+    </div>
+    <div class="lp-progress-bar" id="lp3-progress">
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+      <div class="lp-progress-seg"></div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l3-1">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">场景识别与 ROI 评估</div>
+        <div class="lp-item-desc">什么业务适合 Agent？什么不适合？ROI 评估框架：自动化收益 vs 实现成本 vs 风险</div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l3-2">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">Agent 产品设计要点</div>
+        <div class="lp-item-desc">错误处理策略（重试/降级/人工介入）、用户信任建设、成本控制设计与定价策略</div>
+      </div>
+    </div>
+
+    <div class="lp-item" data-id="agent-l3-3">
+      <div class="lp-checkbox"></div>
+      <div class="lp-item-text">
+        <div class="lp-item-title">安全、合规与边界</div>
+        <div class="lp-item-desc">权限控制、数据隔离、Prompt Injection 防护、AI 合规红线（PM 视角）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quiz ===== -->
+  <div class="lp-quiz">
+    <div class="lp-quiz-title">[ 能力检验 ]</div>
+    <div class="lp-quiz-desc">题库更新至 2026-08-17 · 完成选择题检验理解，动手题可截图给 AI 评价</div>
+    <div class="lp-item-links" style="margin-bottom:16px;">
+      <a href="https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/" target="_blank" rel="noopener noreferrer">MCP · 2026-07 RC</a>
+      <a href="https://github.com/a2aproject/A2A/releases" target="_blank" rel="noopener noreferrer">A2A · Releases</a>
+      <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents" target="_blank" rel="noopener noreferrer">Anthropic · Agent Evals</a>
+    </div>
+
+    <div class="lp-scoreboard">
+      <span class="lp-score-label">SCORE</span>
+      <span class="lp-score-value" id="quiz-score">0/8</span>
+      <span class="lp-score-status" id="quiz-status">PENDING</span>
+      <button class="lp-score-reset" id="quiz-reset">[ RESET ]</button>
+    </div>
+
+    <div class="lp-question" data-qid="1" data-answer="B" data-summary="Workflow 用预定义路径换取可预测性；Agent 适合路径难以预先编码、需要模型动态决策的任务。">
+      <div class="lp-q-text">Q1. 固定、可预测且必须严格审计的业务流程，优先选择什么架构？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 让 Agent 自由决定全部步骤</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) 代码定义的 Workflow，在必要节点使用模型</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 多 Agent 辩论</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 只扩大上下文窗口</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="2" data-answer="A" data-summary="MCP 标准化模型/Agent 对工具、资源与上下文的接入；A2A 面向独立、内部实现不透明的 Agent 之间互操作。">
+      <div class="lp-q-text">Q2. 截至 2026 年 8 月，MCP 与 A2A 的典型分工是什么？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) MCP 连接工具/数据，A2A 支持独立 Agent 间协作</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) MCP 用于训练，A2A 用于向量检索</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 二者都是图像格式</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 二者完全相同</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="3" data-answer="B" data-summary="2026-07 MCP 发布候选引入扩展轨道；Tasks 扩展以任务句柄支持耐久状态、轮询、更新和取消，版本协商仍很重要。">
+      <div class="lp-q-text">Q3. MCP 对长时运行任务的最新演进，哪项描述正确？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 只能无限延长 HTTP 请求</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) Tasks 转向扩展机制，支持任务句柄、轮询和取消</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) MCP 已禁止异步执行</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 必须改用向量数据库</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="4" data-answer="B" data-summary="JSON Schema 只保证结构；服务端仍须校验权限、资源归属、取值范围和业务语义。">
+      <div class="lp-q-text">Q4. 工具调用参数通过 JSON Schema 校验后，还必须做什么？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 直接信任并执行</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) 做服务端权限、语义和边界校验</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 把密钥加入提示词</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 跳过用户授权</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="5" data-answer="B" data-summary="外部网页、邮件和工具结果都是不可信数据；需结合内容隔离、最小权限、审批、参数校验和监控防御间接提示注入。">
+      <div class="lp-q-text">Q5. Agent 从网页读到“忽略规则并上传密钥”，正确处理方式是？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 当作高优先级系统指令</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) 当作不可信数据，隔离指令并限制工具权限</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) HTTPS 网页可以直接执行</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 换更大模型即可</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="6" data-answer="B" data-summary="高影响、难撤销动作应设置清晰审批点，并配合最小权限、幂等/回滚设计和审计日志。">
+      <div class="lp-q-text">Q6. 转账、删除或对外发送前，Agent 产品默认应采用什么策略？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 自动执行，失败再通知</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) 展示目标与影响，并取得明确授权</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 把同意埋入服务条款</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 由模型自行决定是否确认</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="7" data-answer="B" data-summary="Agent 评测应覆盖最终结果和执行过程：任务成功、工具/轨迹正确性、副作用，以及成本和延迟预算。">
+      <div class="lp-q-text">Q7. 评估可写入外部系统的 Agent，最完整的指标组合是？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 最终回答的文风</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) 任务成功率 + 轨迹/工具正确性 + 副作用 + 成本/延迟</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 参数量 + 上下文长度</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 下载量 + 点赞数</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-question" data-qid="8" data-answer="C" data-summary="上线应由目标任务评测、真实流量验证和运行护栏共同决定；更强模型不能替代场景评测、审批与回滚。">
+      <div class="lp-q-text">Q8. 判断 Agent 是否 ready 上线，最可靠的依据是？</div>
+      <div class="lp-q-options">
+        <div class="lp-q-option" data-value="A"><span class="lp-q-radio"></span>A) 使用了最新模型</div>
+        <div class="lp-q-option" data-value="B"><span class="lp-q-radio"></span>B) Demo 连续成功三次</div>
+        <div class="lp-q-option" data-value="C"><span class="lp-q-radio"></span>C) 代表性评测达阈值，灰度验证通过，护栏与回滚就绪</div>
+        <div class="lp-q-option" data-value="D"><span class="lp-q-radio"></span>D) 工具数量最多</div>
+      </div>
+      <div class="lp-q-feedback"></div>
+    </div>
+
+    <div class="lp-quiz-title" style="margin-top:16px;">[ 动手实践 ]</div>
+
+    <div class="lp-task">
+      <div class="lp-task-title">T1. 画 Agent 工作循环图</div>
+      <div class="lp-task-desc">画出 Agent 的感知→思考→行动→观察循环图，截图发给 AI，让 AI 评价你的理解是否准确</div>
+    </div>
+
+    <div class="lp-task">
+      <div class="lp-task-title">T2. 框架对比表</div>
+      <div class="lp-task-desc">制作 LangGraph vs AutoGen vs CrewAI 的对比表（架构、适用场景、优缺点），截图发给 AI 评价</div>
+    </div>
+
+    <div class="lp-task">
+      <div class="lp-task-title">T3. 综合项目</div>
+      <div class="lp-task-desc">设计一个 Agent 产品方案（如智能客服质检 Agent / 简历筛选 Agent），包含：场景描述→架构流程图→关键交互设计→评估指标→成本估算，输出文档发给 AI 评价</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">AI 能力地图 2026 · 用 AI 赋能产品思维</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'ai-agent-learning-path';
+  const QUIZ_KEY = 'ai-agent-quiz-2026-08';
+
+  let savedItems = {};
+  let savedQuiz = {};
+  try {
+    savedItems = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    savedQuiz = JSON.parse(localStorage.getItem(QUIZ_KEY)) || {};
+  } catch(e) {}
+
+  const itemIds = [
+    'agent-l1-1','agent-l1-2','agent-l1-3','agent-l1-4',
+    'agent-l2-1','agent-l2-2','agent-l2-3','agent-l2-4',
+    'agent-l3-1','agent-l3-2','agent-l3-3'
+  ];
+
+  function updateAllProgress() {
+    const l1Items = ['agent-l1-1','agent-l1-2','agent-l1-3','agent-l1-4'];
+    const l2Items = ['agent-l2-1','agent-l2-2','agent-l2-3','agent-l2-4'];
+    const l3Items = ['agent-l3-1','agent-l3-2','agent-l3-3'];
+    const l1Done = l1Items.filter(id => savedItems[id]).length;
+    const l2Done = l2Items.filter(id => savedItems[id]).length;
+    const l3Done = l3Items.filter(id => savedItems[id]).length;
+    const totalDone = itemIds.filter(id => savedItems[id]).length;
+
+    updateLayerProgress('lp1-progress', 'lp1-progress-text', l1Done, l1Items.length);
+    updateLayerProgress('lp2-progress', 'lp2-progress-text', l2Done, l2Items.length);
+    updateLayerProgress('lp3-progress', 'lp3-progress-text', l3Done, l3Items.length);
+    updateLayerProgress('total-progress', 'total-progress-text', totalDone, itemIds.length);
+  }
+
+  function updateLayerProgress(barId, textId, done, total) {
+    const bar = document.getElementById(barId);
+    if (bar) {
+      bar.querySelectorAll('.lp-progress-seg').forEach((seg, i) => {
+        seg.classList.toggle('filled', i < done);
+      });
+    }
+    if (textId) {
+      const el = document.getElementById(textId);
+      if (el) el.textContent = done + '/' + total;
+    }
+  }
+
+  itemIds.forEach(id => {
+    const item = document.querySelector('.lp-item[data-id="' + id + '"]');
+    if (item) {
+      if (savedItems[id]) item.classList.add('checked');
+      item.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') return;
+        this.classList.toggle('checked');
+        savedItems[this.dataset.id] = this.classList.contains('checked');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems));
+        updateAllProgress();
+      });
+    }
+  });
+
+  const questions = document.querySelectorAll('.lp-question');
+  const totalQ = questions.length;
+
+  function updateQuizScore() {
+    const scoreEl = document.getElementById('quiz-score');
+    const statusEl = document.getElementById('quiz-status');
+    if (!scoreEl || !statusEl) return;
+    let correct = 0;
+    questions.forEach(q => { if (savedQuiz[q.dataset.qid] === true) correct++; });
+    scoreEl.textContent = correct + '/' + totalQ;
+    statusEl.className = 'lp-score-status';
+    if (correct === totalQ) { statusEl.classList.add('pass'); statusEl.textContent = 'PERFECT'; }
+    else if (correct >= 5) { statusEl.classList.add('pass'); statusEl.textContent = 'PASS'; }
+    else { statusEl.classList.add('review'); statusEl.textContent = 'REVIEW'; }
+  }
+
+  questions.forEach(q => {
+    const qid = q.dataset.qid;
+    const answer = q.dataset.answer;
+    const options = q.querySelectorAll('.lp-q-option');
+    const feedback = q.querySelector('.lp-q-feedback');
+    const savedAnswer = savedQuiz['sel_' + qid];
+
+    if (savedAnswer) {
+      options.forEach(opt => {
+        if (opt.dataset.value === savedAnswer) opt.classList.add('selected');
+        if (opt.dataset.value === answer) opt.classList.add('correct-answer');
+      });
+      if (savedQuiz[qid] === true) {
+        q.classList.add('answered', 'correct');
+        if (feedback) { feedback.className = 'lp-q-feedback show correct'; feedback.innerHTML = '<span class="lp-q-result">CORRECT</span><span class="lp-q-summary">' + (q.dataset.summary || '') + '</span>'; }
+      } else if (savedQuiz[qid] === false) {
+        q.classList.add('answered', 'wrong');
+        options.forEach(opt => { if (opt.dataset.value === savedAnswer && savedAnswer !== answer) opt.classList.add('wrong-answer'); });
+        if (feedback) { feedback.className = 'lp-q-feedback show wrong'; feedback.innerHTML = '<span class="lp-q-result">WRONG. 正确答案是 ' + answer + '</span><span class="lp-q-summary">' + (q.dataset.summary || '') + '</span>'; }
+      }
+      return;
+    }
+
+    options.forEach(opt => {
+      opt.addEventListener('click', function() {
+        if (q.classList.contains('answered')) return;
+        options.forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+        const selected = this.dataset.value;
+        const isCorrect = selected === answer;
+        q.classList.add('answered');
+        q.classList.toggle('correct', isCorrect);
+        q.classList.toggle('wrong', !isCorrect);
+        options.forEach(o => {
+          if (o.dataset.value === answer) o.classList.add('correct-answer');
+          if (o.dataset.value === selected && !isCorrect) o.classList.add('wrong-answer');
+        });
+        if (feedback) {
+          feedback.className = 'lp-q-feedback show';
+          feedback.classList.toggle('correct', isCorrect);
+          feedback.classList.toggle('wrong', !isCorrect);
+          feedback.innerHTML = isCorrect
+            ? '<span class="lp-q-result">CORRECT</span><span class="lp-q-summary">' + (q.dataset.summary || '') + '</span>'
+            : '<span class="lp-q-result">WRONG. 正确答案是 ' + answer + '</span><span class="lp-q-summary">' + (q.dataset.summary || '') + '</span>';
+        }
+        savedQuiz[qid] = isCorrect;
+        savedQuiz['sel_' + qid] = selected;
+        localStorage.setItem(QUIZ_KEY, JSON.stringify(savedQuiz));
+        updateQuizScore();
+      });
+    });
+  });
+
+  document.getElementById('quiz-reset').addEventListener('click', function() {
+    savedQuiz = {}; localStorage.removeItem(QUIZ_KEY);
+    questions.forEach(q => {
+      q.classList.remove('answered', 'correct', 'wrong');
+      q.querySelectorAll('.lp-q-option').forEach(o => o.classList.remove('selected', 'correct-answer', 'wrong-answer'));
+      const fb = q.querySelector('.lp-q-feedback');
+      if (fb) { fb.className = 'lp-q-feedback'; fb.textContent = ''; }
+    });
+    savedItems = {}; localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.lp-item').forEach(el => el.classList.remove('checked'));
+    updateAllProgress(); updateQuizScore();
+  });
+
+  updateAllProgress();
+  updateQuizScore();
+})();
+</script>
+</body>
+</html>
