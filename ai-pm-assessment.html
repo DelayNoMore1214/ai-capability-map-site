@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品经理 · AI 能力测验</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg: #fafbfc;
+  --surface: #ffffff;
+  --border: #e8ecf0;
+  --text: #1a1a2e;
+  --text-secondary: #5a6070;
+  --text-muted: #949dad;
+  --primary: #4f46e5;
+  --primary-light: #eef2ff;
+  --success: #059669;
+  --success-light: #ecfdf5;
+  --error: #dc2626;
+  --error-light: #fef2f2;
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+  --accent: #0891b2;
+  --accent-light: #ecfeff;
+  --radius: 10px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Inter", "Noto Sans SC", -apple-system, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar .logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 1rem; color: var(--text);
+}
+.topbar .logo .dot {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.8rem; font-weight: 800;
+}
+.topbar .meta { font-size: 0.8rem; color: var(--text-muted); }
+.topbar .progress-bar-wrap {
+  width: 160px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+}
+.topbar .progress-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 3px; transition: width 0.3s; width: 0%;
+}
+.container { max-width: 820px; margin: 0 auto; padding: 32px 20px 80px; }
+.assessment-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  margin-bottom: 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.assessment-header .badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 16px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;
+  background: var(--primary-light); color: var(--primary);
+  margin-bottom: 16px;
+}
+.assessment-header h1 {
+  font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.assessment-header .subtitle {
+  font-size: 0.95rem; color: var(--text-secondary);
+  max-width: 520px; margin: 0 auto; line-height: 1.7;
+}
+.assessment-header .test-info {
+  display: flex; justify-content: center; gap: 28px; margin-top: 20px;
+  flex-wrap: wrap;
+}
+.assessment-header .test-info .ti-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.82rem; color: var(--text-muted);
+}
+.assessment-header .test-info .ti-item strong { color: var(--text); }
+.section-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.section-head {
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 20px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.section-head .sec-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.sec-icon-mc { background: #eef2ff; color: #4f46e5; }
+.sec-icon-tf { background: #ecfeff; color: #0891b2; }
+.sec-icon-sa { background: #fffbeb; color: #d97706; }
+.section-head h2 { font-size: 1.15rem; font-weight: 700; }
+.section-head .sec-badge {
+  font-size: 0.7rem; padding: 2px 10px; border-radius: 6px; font-weight: 600;
+  margin-left: auto;
+}
+.sec-badge-mc { background: #eef2ff; color: #4f46e5; }
+.sec-badge-tf { background: #ecfeff; color: #0891b2; }
+.sec-badge-sa { background: #fffbeb; color: #d97706; }
+.q-item { padding: 18px 0; border-bottom: 1px solid #f0f2f5; transition: background 0.2s; }
+.q-item:last-child { border-bottom: none; }
+.q-item.answered { background: #fafcff; margin: 0 -12px; padding: 18px 12px; border-radius: 6px; }
+.q-num { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; letter-spacing: 0.04em; }
+.q-stem { font-size: 0.92rem; font-weight: 500; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.opts { display: flex; flex-direction: column; gap: 6px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: 8px;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: all 0.18s; background: #fafbfc;
+  font-size: 0.86rem; line-height: 1.55;
+}
+.opt:hover { border-color: var(--primary-light); background: #f8f9ff; }
+.opt.selected { border-color: var(--primary); background: var(--primary-light); }
+.opt.correct { border-color: var(--success); background: var(--success-light); }
+.opt.wrong { border-color: var(--error); background: var(--error-light); }
+.opt .opt-letter {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+  border: 1.5px solid var(--border); background: #fff; color: var(--text-muted);
+  transition: all 0.18s;
+}
+.opt.selected .opt-letter { border-color: var(--primary); background: var(--primary); color: #fff; }
+.opt.correct .opt-letter { border-color: var(--success); background: var(--success); color: #fff; }
+.opt.wrong .opt-letter { border-color: var(--error); background: var(--error); color: #fff; }
+.tf-opts { display: flex; gap: 12px; }
+.tf-opt {
+  flex: 1; text-align: center; padding: 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); cursor: pointer;
+  font-size: 0.9rem; font-weight: 600; transition: all 0.18s;
+  background: #fafbfc; max-width: 140px;
+}
+.tf-opt:hover { border-color: var(--accent); background: #f8fdff; }
+.tf-opt.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+.tf-opt.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+.tf-opt.wrong { border-color: var(--error); background: var(--error-light); color: var(--error); }
+.sa-textarea {
+  width: 100%; min-height: 120px; padding: 14px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: inherit; font-size: 0.88rem; line-height: 1.7;
+  resize: vertical; background: #fafbfc; color: var(--text);
+  transition: border-color 0.2s;
+}
+.sa-textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+.answer-reveal {
+  margin-top: 12px; padding: 12px 16px; border-radius: 8px;
+  font-size: 0.84rem; line-height: 1.65; display: none;
+  border-left: 3px solid;
+}
+.answer-reveal.show { display: block; }
+.answer-reveal.correct-ans { background: var(--success-light); border-color: var(--success); color: #065f46; }
+.answer-reveal.wrong-ans { background: var(--error-light); border-color: var(--error); color: #991b1b; }
+.answer-reveal .ans-label { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.answer-reveal .ans-detail { margin-top: 2px; }
+.submit-block { text-align: center; padding: 20px 0 0; }
+.btn-submit {
+  padding: 16px 56px; border-radius: 12px;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 1.05rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px rgba(79,70,229,0.2);
+}
+.btn-submit:hover { background: #3730a3; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(79,70,229,0.3); }
+.btn-submit:disabled { background: #c7d2fe; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-reset {
+  display: inline-block; margin-top: 14px;
+  padding: 10px 28px; border-radius: 8px;
+  background: transparent; color: var(--text-muted); border: 1px solid var(--border);
+  font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+.result-panel {
+  display: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px; margin-bottom: 28px;
+  box-shadow: var(--shadow); text-align: center;
+}
+.result-panel.show { display: block; }
+.result-panel .rp-score {
+  font-size: 3.5rem; font-weight: 800; letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.result-panel .rp-label { font-size: 0.9rem; color: var(--text-secondary); margin: 4px 0 16px; }
+.result-panel .rp-breakdown { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.result-panel .rp-item { padding: 10px 20px; border-radius: 8px; background: #f8fafc; border: 1px solid var(--border); font-size: 0.85rem; }
+.result-panel .rp-item strong { font-size: 1.2rem; display: block; }
+.result-panel .rp-msg { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; max-width: 480px; margin: 0 auto; }
+.result-panel .rp-dimension-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; }
+.result-panel .rp-dim-tag { font-size: 0.7rem; padding: 3px 10px; border-radius: 6px; font-weight: 500; }
+.rp-dim-strong { background: #ecfdf5; color: #059669; }
+.rp-dim-weak { background: #fef2f2; color: #dc2626; }
+@media (max-width: 640px) {
+  .container { padding: 16px 12px 60px; }
+  .section-wrap { padding: 20px 16px; }
+  .assessment-header { padding: 24px 16px; }
+  .assessment-header h1 { font-size: 1.4rem; }
+  .tf-opts { flex-direction: column; }
+  .tf-opt { max-width: none; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><span class="dot">AI</span>产品经理 · AI 能力测验</div>
+  <div class="meta">答题进度 <span id="progressCount">0</span> / 32</div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+</div>
+
+<div class="container">
+
+<div class="assessment-header">
+  <div class="badge">✦ 制度试行 · 以考促学 ✦</div>
+  <h1>产品经理 AI 能力测验</h1>
+  <p class="subtitle">
+    本测验旨在检验 AI 认知与实践成果，鼓励持续学习。<br>
+    非严格考试，请放松心态，诚实作答。
+  </p>
+  <div class="test-info">
+    <div class="ti-item">📋 <strong>20</strong> 选择题</div>
+    <div class="ti-item">✅ <strong>10</strong> 判断题</div>
+    <div class="ti-item">✍️ <strong>2</strong> 简答题</div>
+    <div class="ti-item">⏱️ 建议 <strong>45</strong> 分钟</div>
+  </div>
+</div>
+
+<div class="result-panel" id="resultPanel">
+  <div class="rp-score" id="rpScore">--</div>
+  <div class="rp-label">客观题得分（选择题 + 判断题，满分 100）</div>
+  <div class="rp-breakdown">
+    <div class="rp-item">📋 选择题<br><strong id="rpMC">--</strong>/60</div>
+    <div class="rp-item">✅ 判断题<br><strong id="rpTF">--</strong>/40</div>
+  </div>
+  <div class="rp-msg" id="rpMsg"></div>
+  <div class="rp-dimension-tags" id="rpDimTags"></div>
+</div>
+
+<div class="section-wrap" id="secMC">
+  <div class="section-head">
+    <div class="sec-icon sec-icon-mc">📋</div>
+    <h2>第一部分 · 单项选择题</h2>
+    <span class="sec-badge sec-badge-mc">20 题 · 每题 3 分</span>
+  </div>
+  <div id="mcQuestions"></div>
+</div>
+
+<div class="section-wrap" id="secTF">
+  <div class="section-head">
+    <div class="sec-icon sec-icon-tf">✅</div>
+    <h2>第二部分 · 判断题</h2>
+    <span class="sec-badge sec-badge-tf">10 题 · 每题 4 分</span>
+  </div>
+  <div id="tfQuestions"></div>
+</div>
+
+<div class="section-wrap" id="secSA">
+  <div class="section-head">
+    <div class="sec-icon sec-icon-sa">✍️</div>
+    <h2>第三部分 · 简答题</h2>
+    <span class="sec-badge sec-badge-sa">2 题 · 不计分</span>
+  </div>
+  <div id="saQuestions"></div>
+</div>
+
+<div class="submit-block">
+  <button class="btn-submit" id="btnSubmit" onclick="submitAssessment()">📝 提交答卷</button>
+  <br>
+  <button class="btn-reset" onclick="resetAssessment()">↻ 重新作答</button>
+</div>
+
+</div>
+
+<script>
+const mcQuestions = [
+  {
+    id: 1,
+    dim: `大模型核心原理`,
+    stem: `关于大模型的“上下文窗口（Context Window）”，以下哪项理解最为准确？`,
+    opts: [
+      `上下文窗口越大，模型推理速度就越快`,
+      `上下文窗口决定了模型单次能“看到”的信息量上限，直接影响长文档处理和对话记忆能力`,
+      `上下文窗口仅影响图像输入，对文本处理没有实际意义`,
+      `上下文窗口的大小与API调用成本完全无关`,
+    ],
+    ans: 1
+  },
+  {
+    id: 2,
+    dim: `模型选型与成本评估`,
+    stem: `作为产品经理，为一个面向C端用户、日活百万级的AI助手选择底层模型时，以下哪项是<strong>最不需要</strong>优先考虑的？`,
+    opts: [
+      `模型API的调用延迟与并发承载能力`,
+      `单次推理的Token消耗与成本`,
+      `模型训练时使用的具体GPU型号与集群架构`,
+      `模型在目标语言（如中文）场景下的回答准确率`,
+    ],
+    ans: 2
+  },
+  {
+    id: 3,
+    dim: `AI趋势追踪与前沿洞察`,
+    stem: `产品经理建立个人AI前沿追踪体系，以下哪种做法<strong>效率最低</strong>？`,
+    opts: [
+      `订阅2-3个高质量的AI Newsletter和行业播客，利用碎片时间获取关键信息`,
+      `每日逐篇通读arXiv上所有AI相关新论文，不遗漏任何一篇`,
+      `关注头部AI公司官方博客和关键技术负责人社交媒体，获取一手动态`,
+      `建立个人知识库，定期对收集的信息进行分类、验证和团队分享`,
+    ],
+    ans: 1
+  },
+  {
+    id: 4,
+    dim: `AI时代PM岗位价值重塑`,
+    stem: `AI时代，产品经理最不可被AI替代的核心竞争力是？`,
+    opts: [
+      `快速撰写格式规范的PRD文档`,
+      `整理和归纳会议纪要`,
+      `在信息不完备的模糊场景下，做出跨领域的战略判断与价值取舍`,
+      `收集和汇总竞品的功能清单`,
+    ],
+    ans: 2
+  },
+  {
+    id: 5,
+    dim: `提示工程`,
+    stem: `你需要让AI对一份30页的SaaS服务合同进行逐条风险审查，并按“高/中/低”三档标注风险等级。以下哪种提示策略最高效？`,
+    opts: [
+      `发送“帮我看看这份合同有没有问题”`,
+      `使用思维链（CoT）提示+结构化输出格式，逐条列出审查维度与风险判定标准，要求按指定JSON格式输出结果`,
+      `将合同逐页截图发送给AI，让AI像人一样“看图审合同”`,
+      `反复用不同措辞发送同一个问题，直到得到满意结果`,
+    ],
+    ans: 1
+  },
+  {
+    id: 6,
+    dim: `RAG检索增强生成`,
+    stem: `在构建一个企业内部的AI知识问答系统时，以下哪个环节对最终回答质量的<strong>影响最大</strong>？`,
+    opts: [
+      `聊天界面的配色方案和字体选择`,
+      `文档的分块策略、Embedding模型选型与检索精度调优`,
+      `知识库服务器的物理部署位置`,
+      `数据库选用MySQL还是PostgreSQL`,
+    ],
+    ans: 1
+  },
+  {
+    id: 7,
+    dim: `AI Agent / 智能体`,
+    stem: `以下哪个业务场景<strong>最适合</strong>引入AI Agent（智能体），而非仅使用普通的对话机器人？`,
+    opts: [
+      `用户查询“公司健身房几点开门”`,
+      `自动从CRM调取客户数据→从BI系统拉取销售报表→交叉分析→生成周报→发送邮件给管理层`,
+      `向用户回复一条固定的话术模板`,
+      `将一段中文产品说明逐字翻译成英文`,
+    ],
+    ans: 1
+  },
+  {
+    id: 8,
+    dim: `多模态能力应用`,
+    stem: `你收到一段60分钟的英文产品发布会录像，需要在2小时内产出一份中文图文版关键要点纪要。以下哪条AI工具链路最为合理？`,
+    opts: [
+      `用翻译软件翻译视频标题，然后手动脑补内容`,
+      `语音转文字（ASR）→ 大模型翻译+摘要提取 → 关键帧截图+AI配文`,
+      `组织团队人工逐句听写翻译，然后排版`,
+      `直接将视频文件作为附件发送给AI聊天机器人即可`,
+    ],
+    ans: 1
+  },
+  {
+    id: 9,
+    dim: `AI产品设计方法论`,
+    stem: `相较传统软件产品，AI产品设计的核心思维转变是什么？`,
+    opts: [
+      `从“用户体验至上”转变为“完全不需要用户”`,
+      `从追求“确定性输出”转变为“管理概率性结果与用户预期”，在交互中建立信任`,
+      `从“敏捷迭代”退回到“瀑布式开发”`,
+      `AI产品的设计方法论与传统软件完全相同，无需转变`,
+    ],
+    ans: 1
+  },
+  {
+    id: 10,
+    dim: `AI产品评估与测试`,
+    stem: `作为PM，你需要评估新版AI客服系统是否达到上线标准。以下哪种做法最全面？`,
+    opts: [
+      `只要回答速度比旧版快，就可以上线`,
+      `仅由研发团队进行内部冒烟测试即可`,
+      `建立含准确性、一致性、安全性、用户满意度的多维评估体系，并对高频场景进行红队测试`,
+      `直接灰度上线，等用户投诉了再改`,
+    ],
+    ans: 2
+  },
+  {
+    id: 11,
+    dim: `AI合规与伦理`,
+    stem: `以下哪项属于AI产品在国内上线前<strong>必须关注</strong>的合规红线？`,
+    opts: [
+      `App的图标设计是否符合最新审美潮流`,
+      `用户个人信息保护（如《个人信息保护法》）、生成内容的版权归属与不良信息过滤机制`,
+      `服务器机房是否使用了绿色能源`,
+      `团队是否使用了最新的MacBook Pro`,
+    ],
+    ans: 1
+  },
+  {
+    id: 12,
+    dim: `AI客服与智能助手`,
+    stem: `设计企业AI客服系统时，关于“人机协作”机制的最佳实践是？`,
+    opts: [
+      `AI全面替代人工客服，关闭所有人工服务入口以降低成本`,
+      `AI处理标准化、高频的常见问题；当识别到用户情绪激动或问题复杂度超出AI能力边界时，无缝转接人工并附带上下文`,
+      `人工客服和AI机器人各自独立运作、互不关联`,
+      `仅在夜间非工作时间段开启AI客服`,
+    ],
+    ans: 1
+  },
+  {
+    id: 13,
+    dim: `AI营销内容生成`,
+    stem: `使用AI批量生成产品营销文案时，确保品牌调性一致的最有效方法是？`,
+    opts: [
+      `每次随机切换不同的AI模型以追求内容多样性`,
+      `建立品牌专属Prompt模板库+视觉风格指南+定期人工抽检校对机制`,
+      `完全信赖AI输出，不做任何人工干预以追求效率最大化`,
+      `只生成同一种风格的文案以确保安全`,
+    ],
+    ans: 1
+  },
+  {
+    id: 14,
+    dim: `AI数据分析与商业智能`,
+    stem: `产品经理用自然语言输入“上个月华东区哪些SKU的复购率低于10%”，系统即自动生成分析图表。这背后依赖的核心技术路径是？`,
+    opts: [
+      `区块链分布式账本`,
+      `NL2SQL（自然语言转数据库查询）+ 智能可视化引擎`,
+      `VR虚拟现实渲染`,
+      `5G毫米波通信`,
+    ],
+    ans: 1
+  },
+  {
+    id: 15,
+    dim: `AI流程自动化`,
+    stem: `以下哪个场景最适合引入“AI+RPA”（AI决策 + 机器人流程自动化）方案？`,
+    opts: [
+      `制定公司未来三年的战略方向`,
+      `每月从邮件附件中自动提取对账单→AI识别并校验数据→自动录入财务系统→标记异常项并通知人工复核`,
+      `为重要的客户进行一对一的情感关怀`,
+      `头脑风暴下一个季度的产品创新方向`,
+    ],
+    ans: 1
+  },
+  {
+    id: 16,
+    dim: `AI实践落地与价值验证`,
+    stem: `评估一个AI项目是否真正“落地成功”，最重要的判断依据是？`,
+    opts: [
+      `底层模型参数量是否突破了千亿级别`,
+      `是否产出了可量化的业务改善数据（如效率提升X%、成本降低Y%、用户满意度提升Z%）`,
+      `技术团队是否使用了当前最热门的框架`,
+      `项目立项PPT页数是否超过50页`,
+    ],
+    ans: 1
+  },
+  {
+    id: 17,
+    dim: `AI搜索与信息整合`,
+    stem: `产品经理需要对一个全新赛道进行深度竞品调研，最高效的AI辅助方式是？`,
+    opts: [
+      `手动逐一访问每个竞品官网，逐页复制信息到Excel`,
+      `使用AI搜索/研究工具设定多维度调研框架→批量检索→自动归类对比→人工验证关键结论`,
+      `完全依赖ChatGPT的“记忆力”来回答，不做任何外部验证`,
+      `等待竞品公司主动发送资料过来`,
+    ],
+    ans: 1
+  },
+  {
+    id: 18,
+    dim: `AI文档与报告写作`,
+    stem: `关于“AI撰写初稿 → 人工精修定稿”的工作模式，以下理解最准确的是？`,
+    opts: [
+      `AI生成的初稿可直接作为终稿使用，人工审核环节可以跳过`,
+      `PM应负责搭建内容框架、注入业务洞察与战略判断，AI负责填充结构化内容和格式化排版`,
+      `使用AI写作意味着PM的文档能力将完全退化`,
+      `AI写作工具仅适用于技术文档，不适合产品经理的业务文档`,
+    ],
+    ans: 1
+  },
+  {
+    id: 19,
+    dim: `AI决策辅助`,
+    stem: `当PM面临“该功能做还是不做”的两难决策时，AI最能提供的帮助是什么？`,
+    opts: [
+      `替PM直接拍板做出最终决定`,
+      `提供多维度决策框架（如影响-成本矩阵、用户价值评估、SWOT分析），帮助PM看清各选项的利弊`,
+      `通过抛硬币随机生成建议`,
+      `AI在需要判断力的决策场景中完全无法提供任何帮助`,
+    ],
+    ans: 1
+  },
+  {
+    id: 20,
+    dim: `AI驱动的组织变革`,
+    stem: `产品经理作为团队中的“AI推动者”，在引入AI工具改变团队工作流程时，最容易被忽视但至关重要的因素是？`,
+    opts: [
+      `确保采购了市面上最昂贵的AI许可证`,
+      `团队心理安全感建设——营造“鼓励试错、容忍失败”的AI实验文化，而非将AI作为监控和考核手段`,
+      `立即强制要求全员每天使用AI工具不少于8小时`,
+      `对外宣传时尽可能夸大AI的能力以争取更多预算`,
+    ],
+    ans: 1
+  }
+];
+
+const tfQuestions = [
+  {
+    id: 21,
+    dim: `模型微调与定制 / 数据标注`,
+    stem: `在绝大多数企业知识问答场景中，使用RAG（检索增强生成）方案比从头微调大模型成本更低、迭代更灵活，且无需大量高质量标注数据。`,
+    ans: true
+  },
+  {
+    id: 22,
+    dim: `AI编程辅助 / 低代码工具开发`,
+    stem: `产品经理使用Bolt.new、Cursor等AI编程工具，在完全不理解产品逻辑与技术边界的情况下，也能独立开发出可直接上线运营的商业级应用。`,
+    ans: false
+  },
+  {
+    id: 23,
+    dim: `原型与Demo快速构建`,
+    stem: `产品经理使用AI工具快速生成可交互原型，其核心价值在于加速需求验证、降低跨角色的沟通成本，而非直接产出可部署的生产级代码。`,
+    ans: true
+  },
+  {
+    id: 24,
+    dim: `AI知识管理`,
+    stem: `企业AI知识库的核心价值在于打通信息孤岛，让员工能够通过自然语言一站式检索跨部门、跨系统的全域知识。`,
+    ans: true
+  },
+  {
+    id: 25,
+    dim: `AI辅助研发效能`,
+    stem: `AI对研发效能的提升主要局限在代码自动补全层面，在自动化测试、代码审查、技术文档维护等环节的帮助微乎其微。`,
+    ans: false
+  },
+  {
+    id: 26,
+    dim: `AI会议与信息管理`,
+    stem: `AI会议纪要工具（如通义听悟）的价值仅在于“不用自己记笔记”，对会后的待办事项跟踪和决策复盘帮助不大。`,
+    ans: false
+  },
+  {
+    id: 27,
+    dim: `AI学习与知识获取`,
+    stem: `使用AI辅助学习时，最佳策略是让AI直接给出标准答案并记住它，而非通过对话式追问、类比和案例来加深理解。`,
+    ans: false
+  },
+  {
+    id: 28,
+    dim: `AI自媒体内容创作 / 数字人`,
+    stem: `在2026年，完全由AI驱动的数字人主播和自动化内容矩阵，已经可以彻底取代真人创作者，建立起与真人同等的用户信任与情感连接。`,
+    ans: false
+  },
+  {
+    id: 29,
+    dim: `AI自动化服务（SaaS+Agent）`,
+    stem: `“AI Agent + SaaS”商业模式是指将AI智能体能力嵌入垂直业务场景（如简历智能筛选、合同自动审核），以订阅制或按量计费形式向企业提供服务。`,
+    ans: true
+  },
+  {
+    id: 30,
+    dim: `算力与基础设施认知`,
+    stem: `产品经理在规划AI产品时，完全无需关心模型推理成本和底层基础设施，这些属于纯技术决策范畴。`,
+    ans: false
+  }
+];
+
+const saQuestions = [
+  {
+    id: 31,
+    dim: `综合应用（产品设计+业务赋能+价值验证）`,
+    stem: `请结合你当前负责的业务线，描述一个你计划用AI来优化或创新的具体场景。请从以下角度展开：<br>（1）当前痛点和AI切入点的判断依据；<br>（2）预期的AI解决方案的核心设计思路（不要求技术细节）；<br>（3）你将如何衡量这个AI方案是否成功（列出2-3个可量化KPI）。`,
+    outline: `<strong>思考大纲：</strong><br><strong>（1）痛点识别：</strong>是否从真实业务流程中发现了高频、重复、或信息密度高的环节？是否评估了AI介入的可行性（数据可得性、准确率容忍度、成本边界）？<br><strong>（2）方案设计：</strong>是否体现了从“确定性规则”到“概率性输出”的AI产品思维？是否考虑了Human-in-the-loop的人机协作机制？方案中是否合理运用了提示工程/RAG/Agent等范式？<br><strong>（3）价值验证：</strong>KPI是否具体、可量化？（如：处理效率提升X%、人工介入率降低Y%、用户满意度NPS提升Z点）。是否区分了过程指标与结果指标？是否考虑了灰度验证和A/B对比方案？`
+  },
+  {
+    id: 32,
+    dim: `综合应用（岗位价值+组织变革+趋势追踪+咨询培训）`,
+    stem: `作为产品经理，你如何看待AI对你所在团队和组织带来的深层变革？请从以下角度谈谈你的思考：<br>（1）AI时代产品经理的岗位核心价值正在发生怎样的变化？<br>（2）你计划如何推动所在团队或组织的AI认知提升与实践落地？`,
+    outline: `<strong>思考大纲：</strong><br><strong>（1）岗位价值进化：</strong>是否认识到“信息收集/文档撰写/格式化输出”类工作正被AI快速替代，而“战略判断/用户共情/跨域决策/模糊问题定义”等能力更加稀缺？是否形成了“AI是超级杠杆而非威胁”的心智？<br><strong>（2）组织推动：</strong>是否具备可操作的组织变革思路？（如：建立AI实践小组/内部分享机制/AI工具试点项目/AI能力沉淀为团队资产）。是否考虑了不同角色对AI的接受度差异？是否有从“个人使用AI”到“团队系统化使用AI”的路径设计？<br><strong>（3）持续进化：</strong>是否建立了个人AI前沿追踪与持续学习的习惯？是否将AI能力提升视为持续性投资而非一次性任务？`
+  }
+];
+
+
+// ═══════════════════════════════════════
+//  RENDER QUESTIONS
+// ═══════════════════════════════════════
+
+function renderAll() {
+  renderMC();
+  renderTF();
+  renderSA();
+}
+
+function renderMC() {
+  const container = document.getElementById('mcQuestions');
+  let html = '';
+  mcQuestions.forEach((q, idx) => {
+    html += '<div class="q-item" id="mc-' + q.id + '">' +
+      '<div class="q-num">第 ' + (idx + 1) + ' 题 · ' + q.dim + '</div>' +
+      '<div class="q-stem">' + q.stem + '</div>' +
+      '<div class="opts">';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.opts.forEach((opt, oi) => {
+      html += '<div class="opt" data-q="mc-' + q.id + '" data-v="' + oi + '" onclick="selectMC(\'mc-' + q.id + '\', ' + oi + ', ' + q.id + ')">' +
+        '<span class="opt-letter">' + letters[oi] + '</span>' +
+        '<span>' + opt + '</span>' +
+      '</div>';
+    });
+    html += '</div>' +
+      '<div class="answer-reveal" id="reveal-mc-' + q.id + '"></div>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function renderTF() {
+  const container = document.getElementById('tfQuestions');
+  let html = '';
+  tfQuestions.forEach((q, idx) => {
+    html += '<div class="q-item" id="tf-' + q.id + '">' +
+      '<div class="q-num">第 ' + (idx + 1) + ' 题 · ' + q.dim + '</div>' +
+      '<div class="q-stem">' + q.stem + '</div>' +
+      '<div class="tf-opts">' +
+        '<div class="tf-opt" data-q="tf-' + q.id + '" data-v="true" onclick="selectTF(\'tf-' + q.id + '\', true, ' + q.id + ')">&#10003; 对</div>' +
+        '<div class="tf-opt" data-q="tf-' + q.id + '" data-v="false" onclick="selectTF(\'tf-' + q.id + '\', false, ' + q.id + ')">&#10007; 错</div>' +
+      '</div>' +
+      '<div class="answer-reveal" id="reveal-tf-' + q.id + '"></div>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function renderSA() {
+  const container = document.getElementById('saQuestions');
+  let html = '';
+  saQuestions.forEach((q, idx) => {
+    html += '<div class="q-item" id="sa-' + q.id + '">' +
+      '<div class="q-num">简答题 ' + (idx + 1) + ' · ' + q.dim + '</div>' +
+      '<div class="q-stem">' + q.stem + '</div>' +
+      '<textarea class="sa-textarea" id="sa-text-' + q.id + '" placeholder="请在此输入你的思考与回答……"></textarea>' +
+      '<div class="answer-reveal" id="reveal-sa-' + q.id + '"></div>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+//  SELECTION LOGIC
+// ═══════════════════════════════════════
+
+const userAnswers = {};
+
+function selectMC(qKey, value, qId) {
+  if (submitted) return;
+  userAnswers['mc-' + qId] = value;
+  const parent = document.getElementById(qKey);
+  parent.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+  const target = parent.querySelector('.opt[data-v="' + value + '"]');
+  if (target) target.classList.add('selected');
+  parent.classList.add('answered');
+  updateProgress();
+}
+
+function selectTF(qKey, value, qId) {
+  if (submitted) return;
+  userAnswers['tf-' + qId] = value;
+  const parent = document.getElementById(qKey);
+  parent.querySelectorAll('.tf-opt').forEach(el => el.classList.remove('selected'));
+  const target = parent.querySelector('.tf-opt[data-v="' + value + '"]');
+  if (target) target.classList.add('selected');
+  parent.classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const mcCount = Object.keys(userAnswers).filter(k => k.startsWith('mc-')).length;
+  const tfCount = Object.keys(userAnswers).filter(k => k.startsWith('tf-')).length;
+  const total = mcCount + tfCount;
+  document.getElementById('progressCount').textContent = total;
+  document.getElementById('progressBar').style.width = (total / 30 * 100) + '%';
+}
+
+// ═══════════════════════════════════════
+//  SUBMIT & GRADE
+// ═══════════════════════════════════════
+
+let submitted = false;
+
+function submitAssessment() {
+  const mcDone = mcQuestions.filter(q => userAnswers['mc-' + q.id] !== undefined).length;
+  const tfDone = tfQuestions.filter(q => userAnswers['tf-' + q.id] !== undefined).length;
+  const unanswered = (20 - mcDone) + (10 - tfDone);
+
+  if (unanswered > 0) {
+    if (!confirm('还有 ' + unanswered + ' 道客观题未作答。确定要提交吗？未作答的题目将计为0分。')) {
+      return;
+    }
+  }
+
+  submitted = true;
+  document.getElementById('btnSubmit').disabled = true;
+
+  let mcScore = 0;
+  mcQuestions.forEach(q => {
+    const userAns = userAnswers['mc-' + q.id];
+    const isCorrect = (userAns === q.ans);
+    if (isCorrect) mcScore += 3;
+
+    const parent = document.getElementById('mc-' + q.id);
+    const opts = parent.querySelectorAll('.opt');
+    opts.forEach((el, oi) => {
+      el.classList.remove('selected');
+      if (oi === q.ans) el.classList.add('correct');
+      if (oi === userAns && oi !== q.ans) el.classList.add('wrong');
+    });
+
+    const reveal = document.getElementById('reveal-mc-' + q.id);
+    const letters = ['A', 'B', 'C', 'D'];
+    if (isCorrect) {
+      reveal.className = 'answer-reveal correct-ans show';
+      reveal.innerHTML = '<div class="ans-label">&#10003; 回答正确</div><div class="ans-detail">正确答案：' + letters[q.ans] + '</div>';
+    } else {
+      reveal.className = 'answer-reveal wrong-ans show';
+      const userLetter = userAns !== undefined ? letters[userAns] : '未作答';
+      reveal.innerHTML = '<div class="ans-label">&#10007; 回答错误</div><div class="ans-detail">你的答案：' + userLetter + ' &nbsp;|&nbsp; 正确答案：' + letters[q.ans] + '</div>';
+    }
+  });
+
+  let tfScore = 0;
+  tfQuestions.forEach(q => {
+    const userAns = userAnswers['tf-' + q.id];
+    const isCorrect = (userAns === q.ans);
+    if (isCorrect) tfScore += 4;
+
+    const parent = document.getElementById('tf-' + q.id);
+    const opts = parent.querySelectorAll('.tf-opt');
+    opts.forEach(el => {
+      el.classList.remove('selected');
+      const val = el.getAttribute('data-v') === 'true';
+      if (val === q.ans) el.classList.add('correct');
+      if (val === userAns && val !== q.ans) el.classList.add('wrong');
+    });
+
+    const reveal = document.getElementById('reveal-tf-' + q.id);
+    const correctLabel = q.ans ? '对 &#10003;' : '错 &#10007;';
+    if (isCorrect) {
+      reveal.className = 'answer-reveal correct-ans show';
+      reveal.innerHTML = '<div class="ans-label">&#10003; 回答正确</div><div class="ans-detail">正确答案：' + correctLabel + '</div>';
+    } else {
+      reveal.className = 'answer-reveal wrong-ans show';
+      let userLabel = '未作答';
+      if (userAns === true) userLabel = '对 &#10003;';
+      else if (userAns === false) userLabel = '错 &#10007;';
+      reveal.innerHTML = '<div class="ans-label">&#10007; 回答错误</div><div class="ans-detail">你的答案：' + userLabel + ' &nbsp;|&nbsp; 正确答案：' + correctLabel + '</div>';
+    }
+  });
+
+  saQuestions.forEach(q => {
+    const reveal = document.getElementById('reveal-sa-' + q.id);
+    reveal.className = 'answer-reveal correct-ans show';
+    reveal.innerHTML = '<div class="ans-label">&#128221; 参考思考大纲（非标准答案）</div><div class="ans-detail">' + q.outline + '</div>';
+  });
+
+  const totalScore = mcScore + tfScore;
+  const panel = document.getElementById('resultPanel');
+  panel.classList.add('show');
+  document.getElementById('rpScore').textContent = totalScore + ' / 100';
+  document.getElementById('rpMC').textContent = mcScore + ' / 60';
+  document.getElementById('rpTF').textContent = tfScore + ' / 40';
+
+  let msg = '';
+  if (totalScore >= 85) {
+    msg = '🌟 优秀！你的AI认知与实践能力非常扎实，已具备在企业内部推动AI落地的核心素质。请继续保持前沿追踪，并在组织层面发挥更大的AI引领作用。';
+  } else if (totalScore >= 70) {
+    msg = '👍 良好！你已建立了较为系统的AI知识框架，建议针对薄弱维度进行定向强化，尤其是在实际业务场景中多加实践。';
+  } else if (totalScore >= 55) {
+    msg = '📖 尚可。你已具备AI基础知识，但在多个关键维度上还有提升空间。建议对照下方维度标签，系统回顾AI能力地图中的相关内容。';
+  } else {
+    msg = '🌱 加油！AI学习是一个持续积累的过程。建议从「认知地基」和「个人提效」两个层级开始，逐步建立对AI的系统性理解，再向产品应用和业务赋能方向进阶。';
+  }
+
+  document.getElementById('rpMsg').textContent = msg;
+
+  const allQuestions = [
+    ...mcQuestions.map(q => ({ ...q, type: 'mc' })),
+    ...tfQuestions.map(q => ({ ...q, type: 'tf' }))
+  ];
+  const dimStrong = [];
+  const dimWeak = [];
+  allQuestions.forEach(q => {
+    const key = q.type === 'mc' ? 'mc-' + q.id : 'tf-' + q.id;
+    const userAns = userAnswers[key];
+    const correct = (q.type === 'mc') ? (userAns === q.ans) : (userAns === q.ans);
+    if (correct) dimStrong.push(q.dim);
+    else dimWeak.push(q.dim);
+  });
+
+  let dimTagsHtml = '';
+  const uniqueWeak = [...new Set(dimWeak)];
+  const uniqueStrong = [...new Set(dimStrong)].filter(d => !uniqueWeak.includes(d));
+  if (uniqueWeak.length > 0) {
+    dimTagsHtml += '<span style="font-size:0.75rem;color:var(--text-muted);margin-right:6px;">需加强：</span>';
+    uniqueWeak.forEach(d => {
+      dimTagsHtml += '<span class="rp-dim-tag rp-dim-weak">' + d + '</span>';
+    });
+  }
+  if (uniqueStrong.length > 0) {
+    dimTagsHtml += '<span style="font-size:0.75rem;color:var(--text-muted);margin-right:6px;margin-left:12px;">已掌握：</span>';
+    uniqueStrong.slice(0, 8).forEach(d => {
+      dimTagsHtml += '<span class="rp-dim-tag rp-dim-strong">' + d + '</span>';
+    });
+    if (uniqueStrong.length > 8) {
+      dimTagsHtml += '<span style="font-size:0.7rem;color:var(--text-muted);">等 ' + uniqueStrong.length + ' 项</span>';
+    }
+  }
+  document.getElementById('rpDimTags').innerHTML = dimTagsHtml;
+  document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetAssessment() {
+  if (submitted && !confirm('确定要重新作答吗？当前提交结果将被清除。')) return;
+  submitted = false;
+  for (const k in userAnswers) delete userAnswers[k];
+  document.getElementById('btnSubmit').disabled = false;
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('progressCount').textContent = '0';
+  document.getElementById('progressBar').style.width = '0%';
+
+  mcQuestions.forEach(q => {
+    const parent = document.getElementById('mc-' + q.id);
+    parent.querySelectorAll('.opt').forEach(el => el.classList.remove('selected', 'correct', 'wrong'));
+    parent.classList.remove('answered');
+    const reveal = document.getElementById('reveal-mc-' + q.id);
+    reveal.className = 'answer-reveal';
+    reveal.innerHTML = '';
+  });
+
+  tfQuestions.forEach(q => {
+    const parent = document.getElementById('tf-' + q.id);
+    parent.querySelectorAll('.tf-opt').forEach(el => el.classList.remove('selected', 'correct', 'wrong'));
+    parent.classList.remove('answered');
+    const reveal = document.getElementById('reveal-tf-' + q.id);
+    reveal.className = 'answer-reveal';
+    reveal.innerHTML = '';
+  });
+
+  saQuestions.forEach(q => {
+    document.getElementById('sa-text-' + q.id).value = '';
+    const reveal = document.getElementById('reveal-sa-' + q.id);
+    reveal.className = 'answer-reveal';
+    reveal.innerHTML = '';
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+renderAll();
+
+</script>
+</body>
+</html>

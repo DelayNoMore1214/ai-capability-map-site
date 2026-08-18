@@ -15,10 +15,12 @@
 <div class="nav"><div class="nav-inner"><a class="back" href="ai-capability-learning-path.html?skill=l2-prompt">← 返回专项路径</a><span class="nav-progress" id="navProgress">提示与上下文工程</span></div></div>
 <main class="main" id="app"></main>
 <div class="footer">AI 能力地图 2026 · 学习进度仅保存在当前浏览器</div>
+<script src="ai-capability-checkpoint-l1-data.js"></script>
+<script src="ai-capability-checkpoint-l2-data.js"></script>
 <script>
 const C=(id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources)=>({id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources});
 const Q=(q,options,answer,why)=>({q,options,answer,why});
-const checkpoints=[
+const promptCheckpoints=[
 C('0-0','指令层级与任务定义','45–60 分钟',
 ['模型看到的内容并不处于同一优先级。高层指令规定长期行为和边界，用户指令描述本轮目标；网页、附件和工具结果通常只是数据，不能因为其中写着“忽略之前规则”就获得指令权。','任务定义要写清目标、允许采取的动作、不可越过的边界、输出标准和信息不足时的处理方式。真正可靠的提示不是更长，而是职责清楚、冲突可预测。'],
 ['能区分 System、Developer、User 与不可信数据的职责','能预测两条指令冲突时模型应遵循哪一条','能把模糊任务改写成可执行、可验收的任务定义'],
@@ -81,29 +83,36 @@ C('2-1','版本、观测与回归','45–60 分钟',
 [['OpenAI Evals API','https://platform.openai.com/docs/api-reference/evals','查看按版本重复运行评测的接口'],['OpenAI：Evals 如何驱动业务 AI','https://openai.com/index/evals-drive-next-chapter-of-ai/','理解从测量结果到持续改进的闭环']])
 ];
 
+const skillConfigs={
+  'l2-prompt':{layer:'L2',title:'提示与上下文工程',checkpoints:promptCheckpoints},
+  ...window.L2_CHECKPOINT_SETS,
+  ...window.L1_CHECKPOINT_SETS
+};
 const app=document.getElementById('app');
 const params=new URLSearchParams(location.search);const skill=params.get('skill');const checkpoint=params.get('checkpoint');
+const config=skillConfigs[skill];const checkpoints=config?config.checkpoints:[];
 const index=checkpoints.findIndex(x=>x.id===checkpoint);const data=checkpoints[index];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const list=items=>`<ul>${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
-if(skill!=='l2-prompt'||!data){
+if(!config||!data){
   document.title='未找到学习内容 — AI 能力地图';
-  app.innerHTML='<section class="error"><div class="eyebrow">404 · CHECKPOINT</div><h1>未找到这个学习单元</h1><p>链接中的 skill 或 checkpoint 参数无效。</p><a class="back" href="ai-capability-learning-path.html?skill=l2-prompt">返回提示与上下文工程路径</a></section>';
+  app.innerHTML='<section class="error"><div class="eyebrow">404 · CHECKPOINT</div><h1>未找到这个学习单元</h1><p>链接中的 skill 或 checkpoint 参数无效。</p><a class="back" href="ai-capability-map.html">返回能力地图</a></section>';
 }else{
-  const detailKey=`ai-capability-checkpoint-l2-prompt-${data.id}`;const pathKey='ai-capability-path-l2-prompt';
+  const pathHref=`ai-capability-learning-path.html?skill=${skill}`;
+  const detailKey=`ai-capability-checkpoint-${skill}-${data.id}`;const pathKey=`ai-capability-path-${skill}`;
   let state={answers:{},submitted:false,passed:false,deliverable:false};try{state={...state,...JSON.parse(localStorage.getItem(detailKey)||'{}')}}catch(e){}
   const prev=checkpoints[index-1],next=checkpoints[index+1];
-  document.title=data.title+' — 提示与上下文工程';document.getElementById('navProgress').textContent=`${index+1}/6 · ${data.title}`;
+  document.title=data.title+' — '+config.title;document.querySelector('.nav .back').href=pathHref;document.getElementById('navProgress').textContent=`${index+1}/${checkpoints.length} · ${data.title}`;
   app.innerHTML=`
-  <header class="hero"><div class="eyebrow">L2 · 提示与上下文工程 · ${index+1}/6</div><h1>${esc(data.title)}</h1><p class="lead">${esc(data.explanation[0])}</p><div class="meta"><span>${esc(data.duration)}</span><span>零代码必做</span><span>轻代码进阶</span><span>进度本地保存</span></div></header>
+  <header class="hero"><div class="eyebrow">${config.layer} · ${esc(config.title)} · ${index+1}/${checkpoints.length}</div><h1>${esc(data.title)}</h1><p class="lead">${esc(data.explanation[0])}</p><div class="meta"><span>${esc(data.duration)}</span><span>零代码必做</span><span>轻代码进阶</span><span>进度本地保存</span></div></header>
   <nav class="toc" aria-label="页内导航"><a href="#understand">概念解释</a><a href="#no-code">零代码练习</a><a href="#code">轻代码进阶</a><a href="#quiz">自测</a><a href="#deliverable">交付与验收</a><a href="#resources">一手资料</a></nav>
-  <section class="card" id="understand"><div class="section-kicker">01 · Understand</div><h2>先建立正确的心智模型</h2>${data.explanation.map(x=>`<p>${esc(x)}</p>`).join('')}<h3>学完后你应该能够</h3>${list(data.objectives)}<h3>常见误区</h3><div class="mistakes">${data.misconceptions.map(x=>`<div class="mistake">× ${esc(x)}</div>`).join('')}</div></section>
+  <section class="card" id="understand"><div class="section-kicker">01 · Understand</div><h2>建立正确的心智</h2>${data.explanation.map(x=>`<p>${esc(x)}</p>`).join('')}<h3>学完后你应该能够</h3>${list(data.objectives)}<h3>常见误区</h3><div class="mistakes">${data.misconceptions.map(x=>`<div class="mistake">× ${esc(x)}</div>`).join('')}</div></section>
   <section class="card track" id="no-code"><span class="tag required">必做 · NO CODE</span><div class="section-kicker">02 · Practice</div><h2>零代码练习</h2><ol class="steps">${data.noCodeLab.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><div class="callout"><strong>隐私提醒</strong><p>只使用虚构、脱敏或已获授权的材料，不要把客户隐私、密钥或企业机密粘贴到公共模型。</p></div></section>
   <section class="card track" id="code"><span class="tag advanced">进阶 · LIGHT CODE</span><div class="section-kicker">03 · Verify</div><h2>用最小代码验证机制</h2><p>${esc(data.codeLab.intro)}</p><div class="code-wrap"><button class="copy" type="button">COPY</button><pre><code id="codeText"></code></pre></div></section>
   <section class="card" id="quiz"><div class="section-kicker">04 · Self Check</div><h2>3 题自测</h2><p>答对至少 2 题才算通过。提交后会显示每题解释，可以修改答案后重试。</p><form id="quizForm">${data.quiz.map((q,qi)=>`<fieldset class="quiz-item" style="border-left:0;border-right:0;border-bottom:0"><legend class="quiz-q">${qi+1}. ${esc(q.q)}</legend>${q.options.map((o,oi)=>`<label class="option"><input type="radio" name="q${qi}" value="${oi}" ${String(state.answers[qi])===String(oi)?'checked':''}><span>${esc(o)}</span></label>`).join('')}<div class="item-explanation" id="why${qi}" style="display:none;font-size:12px;color:var(--muted);padding:7px 9px"></div></fieldset>`).join('')}<div class="quiz-result" id="quizResult"></div><button class="button" type="submit">提交自测</button></form></section>
   <section class="card" id="deliverable"><div class="section-kicker">05 · Deliver</div><h2>${esc(data.deliverable.title)}</h2><div class="deliverable">${list(data.deliverable.items)}</div><h3>完成标准</h3><div class="criteria">${data.rubric.map(x=>`<div class="criterion">✓ ${esc(x)}</div>`).join('')}</div><label class="confirm"><input type="checkbox" id="deliverableCheck" ${state.deliverable?'checked':''}><span>我已完成上述必做交付物，并按完成标准自行检查。轻代码进阶不影响本项完成。</span></label><button class="button complete" id="completeButton" type="button">标记为完成</button><div class="callout" id="completeHint"><strong>完成条件</strong><p>自测至少答对 2/3，并确认已完成必做交付物。</p></div></section>
   <section class="card" id="resources"><div class="section-kicker">06 · Sources</div><h2>一手资料</h2>${data.resources.map(r=>`<a class="resource" href="${esc(r[1])}" target="_blank" rel="noopener noreferrer">${esc(r[0])} →<small>${esc(r[2])}</small></a>`).join('')}</section>
-  <nav class="pager">${prev?`<a href="ai-capability-checkpoint.html?skill=l2-prompt&amp;checkpoint=${prev.id}">← 上一篇<strong>${esc(prev.title)}</strong></a>`:'<a href="ai-capability-learning-path.html?skill=l2-prompt">← 返回路径<strong>查看总进度</strong></a>'}${next?`<a href="ai-capability-checkpoint.html?skill=l2-prompt&amp;checkpoint=${next.id}">下一篇 →<strong>${esc(next.title)}</strong></a>`:'<a href="ai-capability-learning-path.html?skill=l2-prompt">完成路径 →<strong>返回查看总进度</strong></a>'}</nav>`;
+  <nav class="pager">${prev?`<a href="ai-capability-checkpoint.html?skill=${skill}&amp;checkpoint=${prev.id}">← 上一篇<strong>${esc(prev.title)}</strong></a>`:`<a href="${pathHref}">← 返回路径<strong>查看总进度</strong></a>`}${next?`<a href="ai-capability-checkpoint.html?skill=${skill}&amp;checkpoint=${next.id}">下一篇 →<strong>${esc(next.title)}</strong></a>`:`<a href="${pathHref}">完成路径 →<strong>返回查看总进度</strong></a>`}</nav>`;
   document.getElementById('codeText').textContent=data.codeLab.code;
   const save=()=>localStorage.setItem(detailKey,JSON.stringify(state));
   const syncPath=complete=>{let path={};try{path=JSON.parse(localStorage.getItem(pathKey))||{}}catch(e){}path[data.id]=complete;localStorage.setItem(pathKey,JSON.stringify(path))};
@@ -112,7 +121,7 @@ if(skill!=='l2-prompt'||!data){
   document.getElementById('quizForm').addEventListener('change',e=>{if(e.target.matches('input[type=radio]')){state.answers[e.target.name.slice(1)]=Number(e.target.value);state.submitted=false;state.passed=false;state.completed=false;syncPath(false);save();showQuiz();updateCompletion()}});
   document.getElementById('quizForm').addEventListener('submit',e=>{e.preventDefault();state.submitted=true;const score=data.quiz.filter((q,i)=>Number(state.answers[i])===q.answer).length;state.passed=score>=2;if(!state.passed){state.completed=false;syncPath(false)}save();showQuiz();updateCompletion()});
   document.getElementById('deliverableCheck').addEventListener('change',e=>{state.deliverable=e.target.checked;if(!state.deliverable){state.completed=false;syncPath(false)}save();updateCompletion()});
-  document.getElementById('completeButton').addEventListener('click',()=>{if(!(state.passed&&state.deliverable))return;if(state.completed){location.href='ai-capability-learning-path.html?skill=l2-prompt';return}state.completed=true;syncPath(true);save();updateCompletion()});
+  document.getElementById('completeButton').addEventListener('click',()=>{if(!(state.passed&&state.deliverable))return;if(state.completed){location.href=pathHref;return}state.completed=true;syncPath(true);save();updateCompletion()});
   document.querySelector('.copy').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(data.codeLab.code);e.target.textContent='COPIED'}catch(err){e.target.textContent='SELECT & COPY'}setTimeout(()=>e.target.textContent='COPY',1600)});
   showQuiz();updateCompletion();
 }
