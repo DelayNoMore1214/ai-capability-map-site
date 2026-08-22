@@ -1,5 +1,5 @@
 (() => {
-const C=(id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources,expertComment='',pitfalls=[])=>({id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources,expertComment,pitfalls});
+const C=(id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources,expertComment='',pitfalls=[],trendTerms=[])=>({id,title,duration,explanation,objectives,misconceptions,noCodeLab,codeLab,deliverable,rubric,quiz,resources,expertComment,pitfalls,trendTerms});
 const Q=(q,options,answer,why)=>({q,options,answer,why});
 const S={
   transformer:['Transformer 原始论文','https://arxiv.org/abs/1706.03762','重点理解注意力如何替代循环结构处理序列，不要求推导公式'],
@@ -20,7 +20,14 @@ const S={
   openaiAgents:['OpenAI · A Practical Guide to Building Agents','https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/','查看模型、工具、指令、编排、护栏和人工介入如何组成 Agent 系统'],
   nistMonitoring:['NIST AI 800-4 · 部署后监控','https://www.nist.gov/publications/challenges-monitoring-deployed-ai-systems-center-ai-standards-and-innovation','理解受控评测与真实环境监控之间的差距和未解决问题'],
   githubReleases:['GitHub Docs · 管理 Releases','https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository','用正式 Release、Tag、变更记录与制品核对项目版本和成熟度'],
-  dshArch:['DeepSeek Harness 架构','deepseek-harness/docs/architecture.zh.md','观察 Harness 如何组织模型、工具、会话、持久化、沙箱、审批和遥测']
+  dshArch:['DeepSeek Harness 架构','deepseek-harness/docs/architecture.zh.md','观察 Harness 如何组织模型、工具、会话、持久化、沙箱、审批和遥测'],
+  openaiHarness2026:['OpenAI · The next evolution of the Agents SDK','https://openai.com/index/the-next-evolution-of-the-agents-sdk/','查看 2026 年 model-native harness、原生沙箱和长时任务运行环境'],
+  openaiComputer2026:['OpenAI · From model to agent','https://openai.com/index/equip-responses-api-computer-environment/','理解 computer environment、上下文压缩与长任务执行的产品化'],
+  mcpApps2026:['MCP · MCP Apps','https://blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/','查看工具返回交互式 UI 的官方扩展及安全模型'],
+  googleProtocols2026:['Google · Developer’s Guide to AI Agent Protocols','https://developers.googleblog.com/en/developers-guide-to-ai-agent-protocols/','区分 MCP、A2A、UCP、AP2、A2UI 与 AG-UI 所解决的不同连接问题'],
+  anthropicSkills:['Anthropic · Agent Skills','https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills','理解指令、脚本和资源如何被封装成可发现、可复用的能力包'],
+  openaiWork2026:['OpenAI · How agents are transforming work','https://openai.com/index/how-agents-are-transforming-work/','观察交互单位从短对话转向长时委派与并行 Agent 任务'],
+  deepResearch2026:['OpenAI · Deep research','https://openai.com/index/introducing-deep-research/','查看 2026 年连接 MCP/App、限制可信站点和可中断研究流程的更新']
 };
 
 const principles=[
@@ -215,26 +222,38 @@ console.log(JSON.stringify(decision,null,2));`},
 
 const trends=[
 C('0-0','新名词、旧机制与真正变化','50–70 分钟',
-['追踪趋势的第一步不是记住名词，而是把它拆回机制。一个热词可能代表新的模型能力、旧组件的新组合、接口或生态趋于标准化，也可能只是市场重新命名。只有说明“以前怎么做、现在改变了什么、证据在哪里”，才算理解趋势。','以 Agent Harness 为例，它通常是承载 Agent 循环、上下文、工具、状态、权限、沙箱、审批、观测和恢复的运行底盘。安全控制是重要组成，但 Harness 不只等于安全；相关机制在 Agent、Workflow、插件系统和软件运行时中早已存在，近期变化更多是能力被系统化、产品化并获得统一称呼。'],
-['能把一个热门概念拆成既有机制、新增变化与未验证主张','能区分模型能力、系统能力、产品包装与生态成熟','能写出一句有证据和产品决策含义的专家锐评'],
-['新名词出现就代表一套从未存在的技术体系。','厂商把多个组件放进同一产品，就证明形成了新的基础范式。','Harness 只是提示词外的一层安全过滤器。'],
-['选择“Agent Harness”作为整条路径的连续案例，收集三个不同来源对它的定义。','画一张概念谱系：Agent Loop、工具调用、会话状态、权限、沙箱、审批、Trace 分别何时已经存在。','为每项变化标注“新能力、新组合、新接口、新产品化或新命名”，并写出证据。','比较一个早期 Agent 框架和一个当前 Harness，列出真正新增、明显增强和只是改名的部分。','用不超过 80 字写出专家锐评，并请一位同事检查它是否能指导产品决策。'],
+['追踪趋势的第一步不是记住名词，而是把它拆回机制。一个热词可能代表新的模型能力、旧组件的新组合、接口或生态趋于标准化，也可能只是市场重新命名。只有说明“以前怎么做、2026 年具体改变了什么、证据在哪里”，才算理解趋势。','截至 2026 年 8 月，值得重点观察的不只有 Agent Harness，还包括 Harness Engineering、Agent Skills、并行/子智能体、Computer Environment、Context Compaction、MCP Apps、A2A 与 Agent 协议栈、长时任务/Agentic Labor，以及连接可信来源的 Deep Research。它们并非都诞生于 2026 年：有的是新扩展或新接口，有的是旧机制随着模型能力、生态兼容和企业治理成熟而被重新产品化。'],
+['能解释 2026 年高频 AI 概念分别处于模型、运行时、能力包、协议、交互或工作方式哪一层','能把一个热门概念拆成既有机制、新增变化与未验证主张','能写出一句有证据、带采用条件和产品决策含义的专家锐评'],
+['2026 年频繁出现的名词都代表当年发明的新技术。','MCP、A2A、MCP Apps、Agent Skills 和 Harness 是同一层的竞品。','并行多个 Agent 或延长运行时间，就会自然得到更高质量和更低成本。'],
+['从下方“2026 概念观察清单”任选 6 个名词，不得只选择 Harness。','为每个名词填写：旧机制、2026 年变化、所属层、产品机会、未解决风险和一手来源日期。','绘制层次图：模型能力 → Harness/Computer Environment → Skills/Tools → MCP/A2A 等协议 → MCP Apps/Agentic UI → 用户工作流。','选择两个经常被混用的概念做对照，例如 MCP 与 A2A、Agent Skills 与工具、Harness 与 Harness Engineering。','为其中一个概念写不超过 80 字的专家锐评，并给出采用、观察或暂缓的条件。'],
 {intro:'用结构化对象强迫自己把“新在哪里”拆开；分类是分析工具，不是行业标准。',code:`const trend = {
-  name: "Agent Harness",
-  oldMechanisms: ["agent loop", "tool execution", "state", "sandbox"],
+  name: "MCP Apps",
+  oldMechanisms: ["tool result", "embedded web UI", "iframe sandbox"],
   changes: [
-    { item: "统一运行时组装", type: "new-integration", evidence: "architecture-doc" },
-    { item: "权限门禁", type: "matured-mechanism", evidence: "runtime-demo" }
+    { item: "工具声明可交互 UI 资源", type: "new-extension", evidence: "2026 spec" },
+    { item: "多个 Host 采用共享约定", type: "ecosystem-maturity", evidence: "client matrix" }
   ],
-  unverifiedClaims: ["无需人工即可安全自治"]
+  unverifiedClaims: ["一次开发即可在所有客户端行为一致"]
 };
 console.table(trend.changes);`},
-{title:'AI 概念祛魅包',items:['一张 Harness 概念谱系与历史机制图','一份“新能力/新组合/新接口/新命名”证据表','一句专家锐评及三条仍待验证的主张']},
-['每个“新”判断都有可回到一手资料的依据','锐评同时说明真实变化与未解决边界','没有把安全控制、Agent 行为和 Harness 运行时混为一谈'],
-[Q('判断一个 AI 热词是否代表真正变化，最可靠的方法是？',['统计社交媒体出现次数','拆回既有机制并比较新增能力、组合、接口与证据','查看名称是否包含 2.0'],1,'概念谱系和可验证差异比名称更能说明变化。'),Q('Agent Harness 最准确的产品理解是？',['只负责内容安全过滤','承载循环、上下文、工具、状态、权限、沙箱与观测等能力的运行底盘','等同于基础大模型'],1,'安全治理是 Harness 的一部分，但运行时职责更广。'),Q('厂商展示一个成功 Harness Demo 后可以推出什么？',['已经具备生产可靠性','证明某条路径可能可行，仍需真实任务、失败、权限和成本验证','所有旧框架都应立刻淘汰'],1,'Demo 是可行性信号，不是生产和商业证据。')],
-[S.dshArch,S.anthropicAgents,S.openaiAgents],
-'Harness 不是凭空出现的新理论，也不只是“给 LLM 加安全框”；它真正值得关注的是把分散的 Agent 工程机制升级为可组合、可治理、可恢复的运行时产品层。',
-['技术坑：不同产品都使用 Harness 一词，但覆盖的循环、状态、权限和恢复能力并不相同，直接横向比较会失真。','产品坑：把运行底盘当成用户价值，容易先搭复杂平台、后寻找真实任务。','组织坑：即使有沙箱和审批，业务责任、凭证 owner 与事故处理仍不能交给运行时自动解决。']),
+{title:'2026 AI 概念祛魅包',items:['一张至少覆盖 6 个名词的“旧机制—真正变化—所属层”概念谱系图','一份“新能力/新组合/新接口/生态成熟/新命名”证据表','两组易混概念对照、一句专家锐评及三条待验证主张']},
+['至少覆盖模型、运行时、能力包、协议和交互中的三个层次','每个“2026 新变化”都有发布日期和可回到一手资料的依据','锐评同时说明真实变化、未解决边界和采用条件'],
+[Q('判断一个 2026 AI 热词是否代表真正变化，最可靠的方法是？',['统计社交媒体出现次数','拆回既有机制并比较新增能力、组合、接口、生态采用与证据','查看名称是否包含 Agent'],1,'概念谱系和可验证差异比名称更能说明变化。'),Q('MCP 与 A2A 最合理的区分是？',['MCP 侧重 Agent/模型连接工具与上下文，A2A 侧重独立 Agent 之间发现、通信和协作','两者都是模型训练算法','A2A 只负责渲染聊天 UI'],0,'协议可能组合使用，但解决的连接层次不同。'),Q('Agent Skills 与 Harness 的关系更接近什么？',['Skills 封装可发现的指令、脚本和资源；Harness 负责把 Agent 循环、工具、状态与控制运行起来','二者都只是模型权重','Skills 一定替代所有工具 API'],0,'能力内容的封装与运行时底盘是两个不同层次。')],
+[S.openaiHarness2026,S.googleProtocols2026,S.mcpApps2026],
+'2026 年真正的主线不是又多了多少 Agent 名词，而是模型开始在受控计算环境中承担更长任务，能力、协议、界面和治理逐步分层；名词能否留下，取决于互操作性、可验证收益与责任闭环。',
+['技术坑：协议、Skills、Harness 和 UI 扩展处在不同层，误当成互相替代会造成重复建设与架构缺口。','产品坑：把长时运行、并行 Agent 或丰富界面当成用户价值，可能只增加等待、冲突、核验和认知负担。','组织坑：Agent 承担更多执行不代表责任转移，权限 owner、结果验收、成本预算和事故响应仍需由人明确。','趋势坑：当前日期是 2026-08，不能把尚未发生的全年预测写成既成事实；后续月份必须通过复查机制增补。'],
+[
+{name:'Agent Harness',layer:'运行时',old:'Agent Loop、工具执行、状态、沙箱与工作流引擎',change:'模型原生 Harness、沙箱和长时任务底盘在 2026 年进一步产品化',type:'工程整合',url:'https://openai.com/index/the-next-evolution-of-the-agents-sdk/'},
+{name:'Harness Engineering',layer:'研发方法',old:'开发环境、规范、CI、测试与反馈循环',change:'人类从逐行编码转向设计环境、意图和反馈，让 Coding Agent 执行',type:'工作方式变化',url:'https://openai.com/index/harness-engineering/'},
+{name:'Agent Skills',layer:'能力包',old:'插件、Runbook、模板、脚本和渐进加载',change:'把领域程序知识封装为可发现、可组合、可移植的文件资源',type:'标准化/产品化',url:'https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills'},
+{name:'Parallel Agents / Subagents',layer:'编排',old:'任务队列、并发执行、角色分工与 Map-Reduce',change:'用户开始监督多个长时 Agent，并把子任务分派到隔离上下文',type:'能力成熟',url:'https://openai.com/index/introducing-the-codex-app/'},
+{name:'Computer Environment',layer:'执行环境',old:'RPA、虚拟机、容器、浏览器自动化与代码沙箱',change:'模型获得文件、Shell、网络和中间制品空间，支撑可重复长任务',type:'系统产品化',url:'https://openai.com/index/equip-responses-api-computer-environment/'},
+{name:'Context Compaction',layer:'上下文',old:'会话摘要、检查点、外部记忆与日志压缩',change:'压缩被纳入长时 Agent 的原生运行链路，并随模型共同优化',type:'机制成熟',url:'https://openai.com/index/equip-responses-api-computer-environment/'},
+{name:'MCP Apps / Agentic UI',layer:'交互',old:'工具结构化结果、嵌入式 Web App 与 iframe 沙箱',change:'MCP 工具可声明在对话中渲染的交互式 UI 资源',type:'2026 新扩展',url:'https://blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/'},
+{name:'A2A 与 Agent 协议栈',layer:'互操作协议',old:'REST、RPC、消息总线、支付协议和前端事件协议',change:'MCP、A2A、UCP、AP2、A2UI、AG-UI 分层处理工具、Agent、交易和界面连接',type:'生态标准化',url:'https://developers.googleblog.com/en/developers-guide-to-ai-agent-protocols/'},
+{name:'Long-horizon Delegation / Agentic Labor',layer:'工作方式',old:'异步任务、外包、批处理与自动化 Workflow',change:'交互单位从一次回答转向可中断、可监督、运行数小时的委派任务',type:'使用范式变化',url:'https://openai.com/index/how-agents-are-transforming-work/'},
+{name:'Connected Deep Research',layer:'知识工作',old:'搜索、RAG、浏览器自动化、研究报告与引用管理',change:'研究 Agent 可连接 MCP/App、限制可信站点并在运行中接受用户调整',type:'能力整合',url:'https://openai.com/index/introducing-deep-research/'}
+]),
 
 C('0-1','证据等级与信息源交叉核验','45–60 分钟',
 ['趋势判断需要把证据按距离事实的远近分层：论文与代码说明机制是否存在，官方文档说明厂商承诺的接口，独立评测说明受控任务表现，真实用户和生产数据说明实际价值。任何单一来源都只能回答部分问题。','交叉核验不是搜到三篇重复报道，而是寻找彼此独立、能相互反驳的证据。还要记录模型、日期、配置、评测集和推理强度；同名模型或榜单在不同设置下可能不是同一个比较对象。'],
@@ -436,7 +455,7 @@ console.table(plan);`},
 window.L1_CHECKPOINT_SETS={
   'l1-principles':{layer:'L1',title:'大模型核心原理（非技术版）',checkpoints:principles},
   'l1-selection':{layer:'L1',title:'模型选型与成本评估',checkpoints:selection},
-  'l1-trends':{layer:'L1',title:'AI 趋势追踪与前沿洞察',version:'expert-v1',checkpoints:trends},
+  'l1-trends':{layer:'L1',title:'AI 趋势追踪与前沿洞察',version:'expert-v2',checkpoints:trends},
   'l1-pm-role':{layer:'L1',title:'AI 时代 PM 岗位价值重塑',checkpoints:pmRole}
 };
 })();
